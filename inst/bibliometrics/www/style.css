@@ -1,0 +1,49 @@
+.nav-wrapper{
+  background-color: #f0faf9 ;
+  text-align: center;
+
+
+}
+
+
+nav.brand-logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ @media screen and (max-width: 600px) {
+        .small-icon {
+          font-size: 18px !important;
+        }
+      }
+
+
+.irs-bar,
+.irs-bar-edge,
+.irs-single,
+.irs-grid-pol {
+  background: #2196F3; /* Color azul del material design */
+  border-color: #2196F3;
+}
+
+.irs-from,
+.irs-to,
+.irs-single {
+  background-color: #2196F3; /* Color azul del material design */
+  color: white;
+}
+
+.irs-line {
+  border-color: #2196F3;
+}
+
+.irs-grid-text {  color: #2196F3;
+}
+
+ table.dataTable.stripe>tbody>tr.odd.selected>*,
+    table.dataTable.display>tbody>tr.odd.selected>*,
+    table.dataTable.stripe>tbody>tr.even.selected>*,
+    table.dataTable.display>tbody>tr.even.selected>* {
+      box-shadow: inset 0 0 0 9999px rgba(240, 250, 249, 0.5);
+    }
