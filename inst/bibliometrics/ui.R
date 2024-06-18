@@ -41,7 +41,7 @@ ui<- material_page(
         class="card z-depth-4",
         tags$div(
           class="card-content",
-
+          id= "cardSearch",
           #SELECT MODALIDAD BÚSQUEDA
           tags$div(
             class = "input-field",
@@ -54,9 +54,21 @@ ui<- material_page(
                 tags$option("Búsqueda por revista", value = "journal")
               ),
               tags$label("Selecciona opción de búsqueda")
-
             )
+          ),
 
+
+
+          #SELECT DE API
+          tags$div(
+            class= "input-field",
+            tags$select(
+              id="select_search",
+              tags$option("API WOS", value = "wos", selected="selected"),
+              tags$option("API Google Scholar", value = "scholar"),
+              tags$option("API Scopus", value = "scopus")
+            ),
+            tags$label("Selecciona API")
           ),
 
           #BUSCADOR TEXTO
@@ -71,30 +83,45 @@ ui<- material_page(
 
           ),
 
-
-          #SELECT DE API
           tags$div(
-            tags$label("Selecciona API donde quieres realizar la búsqueda"),
-            material_checkbox("wos_checkbox", label = "API WOS"),
-            material_checkbox("scholar_checkbox", label = "API Google Scholar"),
-            material_checkbox("scopus_checkbox", label = "API Scopus")
-          ),
+            class="input-field",
+            tags$button(
+              class="btn waves-effect waves-light line",
+              type="submit",
+              name="action",
+              "Buscar",
+              tags$i(
+                class="material-icons right",
+                "search"
+              )
+            )
+          )
 
-            #MÁXIMO ÍNDICE H
+
+
+
+        )
+      ),
+      tags$div(
+        class="card z-depth-4",
+        id="cardFilter",
+        tags$div(
+          class="card-content",
+          #MÁXIMO ÍNDICE H
+          tags$div(
+            id="maxH",
+            class="input-field",
             tags$div(
-              id="maxH",
-              class="input-field",
-              tags$div(
-                class="form-group shiny-input-container",
-                tags$label("Máximo ÍNDICE H"),
-                tags$p(
-                  class="range-fields",
-                  tags$div(
-                    id="slider-indiceH"
-                  )
+              class="form-group shiny-input-container",
+              tags$label("Máximo ÍNDICE H"),
+              tags$p(
+                class="range-fields",
+                tags$div(
+                  id="slider-indiceH"
                 )
               )
-            ),
+            )
+          ),
 
 
 
@@ -159,37 +186,23 @@ ui<- material_page(
               selectInput("paises_seleccionados", "Selecciona país(es):", choices = paises, multiple = TRUE)
             )
           ),
-
-          tags$div(
-            class="input-field",
-            tags$button(
-              class="btn waves-effect waves-light",
-              type="submit",
-              name="action",
-              "Buscar",
-              tags$i(
-                class="material-icons right",
-                "search"
-              )
-            )
-          )
-
-
         )
       )
-      ),
+    ),
 
 
     tags$div(
       class = "col s12 m9",
       material_card(
         title = "Datos obtenidos",
+
         tags$a(
           class="waves-effect waves-light btn modal-trigger",
           href="#modal1",
+          "Exportar datos",
           tags$i(
-            class="material-icons",
-            "file_download"
+            class="material-icons line",
+            "ios_share"
           )
         ),
         tags$div(
@@ -210,8 +223,8 @@ ui<- material_page(
           )
 
 
-        )
-        ,
+        ),
+
         DTOutput("resultados")
       )
     )

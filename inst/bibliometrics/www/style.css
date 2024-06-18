@@ -435,8 +435,17 @@ nav.brand-logo{
   margin-bottom: 100px;
 }
 
-.prueba{
-  margin-top: 20px !important;
-  width: 100% !important;
+.input-field{
+  margin-top: 5px !important;
 }
 
+.select-wrapper+label {
+  top:-17px !important;
+}
+
+
+
+
+.line{
+  line-height: initial !important;
+}
