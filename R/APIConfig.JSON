@@ -1,0 +1,23 @@
+{
+  "name":"Scopus",
+  "params":
+  {
+    "url": "https://api.elsevier.com/content/search/scopus",
+    "key": "9fe5f0fceb3fe06c666cd6217de34c0c"
+  },
+  "name":"WOS",
+  "params":
+  {
+    "url": "https://api.example.com/data1",
+    "key": "value1"
+  },
+  "name":"Google",
+  "params":
+  {
+    "url": "https://api.example.com/data1",
+    "key": "value1"
+  }
+}
+
+
+

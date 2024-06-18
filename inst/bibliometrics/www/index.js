@@ -1,12 +1,25 @@
-
 $(document).ready(function() {
   $('#fecha_publicacion').datepicker({
     format: 'dd/mm/yyyy'
   });
 
-  $('#search_button').on('click', function() {
-    console.log("HAN PULSADO SABES");
+  $('#select_search').change(function() {
+    var optionSelected = $(this).val();
+    console.log(optionSelected);
+
+    switch(optionSelected) {
+      case 'article':
+        console.log("ESTOY AQUÍ");
+        $('#maxH').hide();
+        break;
+      case 'author':
+      case 'journal':
+        $('#maxH').show();
+        break;
+    }
   });
 
 
 });
+
+

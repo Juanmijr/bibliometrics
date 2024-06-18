@@ -1,4 +1,8 @@
 library(DT)
+library(shinyjs)
+
+
+
 server <- function(input, output, session) {
   # Ejemplo de datos
   df <- data.frame(
@@ -41,6 +45,13 @@ server <- function(input, output, session) {
       });"
       ))
   })
+
+    # Observa los cambios en el selectInput
+    observeEvent(input$select_search, {
+      # Imprime el valor seleccionado en la consola del navegador
+      runjs(sprintf("console.log('Se seleccionó: %s')", input$select_search))
+    })
+
 
   # Manejar eventos de los botones
   observeEvent(input$select_button, {

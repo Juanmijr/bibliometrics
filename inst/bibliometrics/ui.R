@@ -12,11 +12,13 @@ ui<- material_page(
   include_nav_bar = FALSE,
   tags$head(
     tags$meta(charset = "UTF-8"),
+    tags$link(rel= "stylesheets", type="text/css", href ="nouislider.css"),
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
-    tags$link(rel= "stylesheets", type="text/css", href = "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"),
+    tags$link(rel= "stylesheets", type="text/css", href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"),
     tags$link(rel= "stylesheets", type="text/css", href = "https://fonts.googleapis.com/icon?family=Material+Icons"),
-    tags$script(src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"),
     tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"),
+    tags$script(src="nouislider.js"),
+    tags$script(src="index.js"),
     tags$title("BiblioMetrics")
   ),
   #NAVBAR
@@ -39,15 +41,17 @@ ui<- material_page(
         class="card z-depth-4",
         tags$div(
           class="card-content",
+
           #SELECT MODALIDAD BÚSQUEDA
           tags$div(
             class = "input-field",
             tags$div(
               class = "form-group shiny-input-container",
               tags$select(
-                tags$option("Búsqueda por artículo", value = "1", selected="selected"),
-                tags$option("Búsqueda por autor", value = "2"),
-                tags$option("Búsqueda por revista", value = "3")
+                id="select_search",
+                tags$option("Búsqueda por artículo", value = "article", selected="selected"),
+                tags$option("Búsqueda por autor", value = "author"),
+                tags$option("Búsqueda por revista", value = "journal")
               ),
               tags$label("Selecciona opción de búsqueda")
 
@@ -76,23 +80,37 @@ ui<- material_page(
             material_checkbox("scopus_checkbox", label = "API Scopus")
           ),
 
-          #MÁXIMO ÍNDICE H
+            #MÁXIMO ÍNDICE H
+            tags$div(
+              id="maxH",
+              class="input-field",
               tags$div(
-                class="input-field",
-                tags$div(
-                  class="form-group shiny-input-container",
-                  tags$label("Máximo ÍNDICE H"),
-                  tags$input(type="range", min="0", max="100", value="0")
+                class="form-group shiny-input-container",
+                tags$label("Máximo ÍNDICE H"),
+                tags$p(
+                  class="range-fields",
+                  tags$div(
+                    id="slider-indiceH"
+                  )
                 )
-              ),
+              )
+            ),
 
-          #MÁXIMO NÚMERO DE CITAS
+
+
+          #NÚMERO DE CITAS
           tags$div(
             class="input-field",
             tags$div(
               class="form-group shiny-input-container",
-              tags$label("Máximo número de citas"),
-              tags$input(type="range", min="0", max="100", value="0")
+              tags$label(class="divRange","Número de citas"),
+              tags$p(
+                class="range-fields",
+                tags$div(
+                  id="slider-citas"
+                )
+              )
+
             )
           ),
           #FECHA PUBLICACIÓN MÍNIMA
@@ -105,22 +123,32 @@ ui<- material_page(
 
             )
           ),
-          #MÁXIMO INDICE H PROMEDIO
+          #INDICE H PROMEDIO
           tags$div(
             class="input-field",
             tags$div(
               class="form-group shiny-input-container",
-              tags$label("Máximo índice H promedio"),
-              tags$input(type="range", min="0", max="100", value="0")
+              tags$label("Índice H promedio"),
+              tags$p(
+                class="range-fields",
+                tags$div(
+                  id="slider-indiceHProm"
+                )
+              )
             )
           ),
-          #MÍNIMO DE CITAS TOTALES
+          #CITAS TOTALES
           tags$div(
             class="input-field",
             tags$div(
               class="form-group shiny-input-container",
-              tags$label("Mínimo de citas totales"),
-              tags$input(type="range", min="0", max="100", value="0")
+              tags$label(class="divRange","Citas totales"),
+              tags$p(
+                class="range-fields",
+                tags$div(
+                  id="slider-citasTotales"
+                )
+              )
             )
           ),
           #ELECCIÓN PAÍS DEL AUTOR
@@ -141,7 +169,7 @@ ui<- material_page(
               "Buscar",
               tags$i(
                 class="material-icons right",
-                "searchh"
+                "search"
               )
             )
           )
@@ -159,7 +187,10 @@ ui<- material_page(
         tags$a(
           class="waves-effect waves-light btn modal-trigger",
           href="#modal1",
-          "Modal"
+          tags$i(
+            class="material-icons",
+            "file_download"
+          )
         ),
         tags$div(
           id="modal1",
@@ -189,8 +220,73 @@ ui<- material_page(
 
 
   ),
+  tags$script("  document.addEventListener('DOMContentLoaded', function() {
+            var sliderIndiceH = document.getElementById('slider-indiceH');
+            var sliderPromedioH = document.getElementById('slider-indiceHProm');
+            var sliderCitas = document.getElementById('slider-citas');
+            var sliderCitasTotales = document.getElementById('slider-citasTotales');
 
-  tags$script(src = "index.js")
+
+            noUiSlider.create(sliderIndiceH, {
+                start: [0, 100], // Valores iniciales del rango
+                connect: true, // Conexión entre los dos valores
+                step:1,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0, // Valor mínimo del rango
+                    'max': 100 // Valor máximo del rango
+                },
+                format: wNumb({
+                  decimals:0
+                })
+            });
+
+            noUiSlider.create(sliderPromedioH, {
+                start: [0, 100], // Valores iniciales del rango
+                connect: true, // Conexión entre los dos valores
+                step:1,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0, // Valor mínimo del rango
+                    'max': 100 // Valor máximo del rango
+                },
+                format: wNumb({
+                  decimals:0
+                })
+            });
+
+            noUiSlider.create(sliderCitas, {
+                start: [0, 100], // Valores iniciales del rango
+                connect: true, // Conexión entre los dos valores
+                step:1,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0, // Valor mínimo del rango
+                    'max': 100 // Valor máximo del rango
+                },
+                format: wNumb({
+                  decimals:0
+                })
+            });
+
+            noUiSlider.create(sliderCitasTotales, {
+                start: [0, 100], // Valores iniciales del rango
+                connect: true, // Conexión entre los dos valores
+                step:1,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0, // Valor mínimo del rango
+                    'max': 100 // Valor máximo del rango
+                },
+                format: wNumb({
+                  decimals:0
+                })
+            });
+
+        });
+
+
+")
 
 
 )
