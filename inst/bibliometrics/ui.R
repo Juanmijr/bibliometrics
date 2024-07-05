@@ -2,13 +2,15 @@ library(shiny)
 library(shinymaterial)
 library(rnaturalearth)
 library(DT)
-
+library(shinyjs)
 
 paisesSin <- ne_countries()
 paises <- paisesSin$name
 
 
 ui<- material_page(
+  primary_theme_color = "#26A69A",
+  useShinyjs(),
   include_nav_bar = FALSE,
   tags$head(
     tags$meta(charset = "UTF-8"),
@@ -17,6 +19,7 @@ ui<- material_page(
     tags$link(rel= "stylesheets", type="text/css", href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"),
     tags$link(rel= "stylesheets", type="text/css", href = "https://fonts.googleapis.com/icon?family=Material+Icons"),
     tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"),
+    tags$link(rel="icon", href="iconoBM.png", type="image/x-icon"),
     tags$script(src="nouislider.js"),
     tags$script(src="index.js"),
     tags$title("BiblioMetrics")
@@ -31,209 +34,220 @@ ui<- material_page(
       )
     ),
 
-  #CUERPO COMPLETO DE LA APP
-  tags$div(
-    class= "row",
+  # Define tabs
+  material_tabs(
+    tabs = c(
+      "Inicio" = "inicio",
+      "Análisis" = "analisis"
+    )
+  ),
+  # Define tab content
+  material_tab_content(
+    tab_id = "inicio",
+    #CUERPO COMPLETO DE LA APP
     tags$div(
-      id = "filters",
-      class = "col s12 m3 offset-s0 offset-m0",
+      class= "row",
       tags$div(
-        class="card z-depth-4",
+        id = "filters",
+        class = "col s12 m3 offset-s0 offset-m0",
         tags$div(
-          class="card-content",
-          id= "cardSearch",
-          #SELECT MODALIDAD BÚSQUEDA
+          class="card z-depth-4",
           tags$div(
-            class = "input-field",
+            class="card-content",
+            id= "cardSearch",
+            #SELECT MODALIDAD BÚSQUEDA
             tags$div(
-              class = "form-group shiny-input-container",
-              tags$select(
-                id="select_search",
-                tags$option("Búsqueda por artículo", value = "article", selected="selected"),
-                tags$option("Búsqueda por autor", value = "author"),
-                tags$option("Búsqueda por revista", value = "journal")
-              ),
-              tags$label("Selecciona opción de búsqueda")
-            )
-          ),
-
-
-
-          #SELECT DE API
-          tags$div(
-            class= "input-field",
-            tags$select(
-              id="select_search",
-              tags$option("API WOS", value = "wos", selected="selected"),
-              tags$option("API Google Scholar", value = "scholar"),
-              tags$option("API Scopus", value = "scopus")
+              class = "input-field",
+              tags$div(
+                class = "form-group shiny-input-container",
+                tags$select(
+                  id="select_search",
+                  tags$option("Búsqueda por artículo", value = "article", selected="selected"),
+                  tags$option("Búsqueda por autor", value = "author"),
+                  tags$option("Búsqueda por revista", value = "journal")
+                ),
+                tags$label("Selecciona opción de búsqueda")
+              )
             ),
-            tags$label("Selecciona API")
-          ),
 
-          #BUSCADOR TEXTO
-          tags$div(
-            class = "input-field",
+
+
+            #SELECT DE API
+
+            material_dropdown(
+              input_id = "selectApi",
+              choices= c(
+                "WOS" = "wos",
+                "Google Scholar" = "scholar",
+                "Scopus" = "scopus"
+              ),
+              multiple = TRUE,
+              label="Selecciona base de datos:"
+            ),
+
+            #BUSCADOR TEXTO
             tags$div(
-              class = "form-group shiny-input-container",
-              tags$i(class="material-icons prefix small-icon", "search"),
-              tags$input(type = "text", id = "search", class = "validate shiny-bound-input", placeholder="Introduce lo que quieres buscar")
+              class = "input-field",
+              tags$div(
+                class = "form-group shiny-input-container",
+                tags$i(class="material-icons prefix small-icon", "search"),
+                tags$input(type = "text", id = "searchText", placeholder="Introduce lo que quieres buscar")
 
+              )
+
+
+
+            ),
+
+            material_button(
+              input_id = "search_button",
+              icon = "search",
+              depth = 5,
+              label="Buscar"
             )
 
-          ),
 
+
+
+          )
+        ),
+        tags$div(
+          class="card z-depth-4",
+          id="cardFilter",
           tags$div(
-            class="input-field",
-            tags$button(
-              class="btn waves-effect waves-light line",
-              type="submit",
-              name="action",
-              "Buscar",
-              tags$i(
-                class="material-icons right",
-                "search"
+            class="card-content",
+            #MÁXIMO ÍNDICE H
+            tags$div(
+              id="maxH",
+              class="input-field",
+              tags$div(
+                class="form-group shiny-input-container",
+                tags$label("Máximo ÍNDICE H"),
+                tags$p(
+                  class="range-fields",
+                  tags$div(
+                    id="slider-indiceH"
+                  )
+                )
+              )
+            ),
+
+
+
+            #NÚMERO DE CITAS
+            tags$div(
+              class="input-field",
+              tags$div(
+                class="form-group shiny-input-container",
+                tags$label(class="divRange","Número de citas"),
+                tags$p(
+                  class="range-fields",
+                  tags$div(
+                    id="slider-citas"
+                  )
+                )
+
+              )
+            ),
+            #FECHA PUBLICACIÓN MÍNIMA
+            tags$div(
+              class = "input-field",
+              tags$div(
+                class= "form-group shiny-input-container",
+                tags$label("Fecha de publicación mínima:"),
+                tags$input(id="fecha_publicacion", value = format(Sys.Date(), "%d/%m/%Y"))
+
+              )
+            ),
+            #INDICE H PROMEDIO
+            tags$div(
+              class="input-field",
+              tags$div(
+                class="form-group shiny-input-container",
+                tags$label("Índice H promedio"),
+                tags$p(
+                  class="range-fields",
+                  tags$div(
+                    id="slider-indiceHProm"
+                  )
+                )
+              )
+            ),
+            #CITAS TOTALES
+            tags$div(
+              class="input-field",
+              tags$div(
+                class="form-group shiny-input-container",
+                tags$label(class="divRange","Citas totales"),
+                tags$p(
+                  class="range-fields",
+                  tags$div(
+                    id="slider-citasTotales"
+                  )
+                )
+              )
+            ),
+            #ELECCIÓN PAÍS DEL AUTOR
+            tags$div(
+              class="input-field",
+              tags$div(
+                class="form-group shiny-input-container",
+                selectInput("paises_seleccionados", "Selecciona país(es):", choices = paises, multiple = TRUE)
               )
             )
           )
-
-
-
 
         )
       ),
+
+
       tags$div(
-        class="card z-depth-4",
-        id="cardFilter",
-        tags$div(
-          class="card-content",
-          #MÁXIMO ÍNDICE H
+        class = "col s12 m9",
+        material_card(
+          tags$span(
+            class="card-title center-align",
+            "Datos obtenidos"
+          ),
+
+          tags$a(
+            class="waves-effect waves-light btn modal-trigger",
+            href="#modalExport",
+            "Exportar datos",
+            tags$i(
+              class="material-icons line",
+              "ios_share"
+            )
+          ),
           tags$div(
-            id="maxH",
-            class="input-field",
+            id="modalExport",
+            class="modal",
             tags$div(
-              class="form-group shiny-input-container",
-              tags$label("Máximo ÍNDICE H"),
-              tags$p(
-                class="range-fields",
-                tags$div(
-                  id="slider-indiceH"
-                )
+              class="modal-content",
+              tags$h4("Modal Header"),
+              tags$p("A bunch of text")
+            ),
+            tags$div(
+              class="modal-footer",
+              tags$a(
+                href="#!",
+                class="modal-close waves-effect btn-flat",
+                "Aceptar"
               )
             )
-          ),
 
 
+          ),
 
-          #NÚMERO DE CITAS
-          tags$div(
-            class="input-field",
-            tags$div(
-              class="form-group shiny-input-container",
-              tags$label(class="divRange","Número de citas"),
-              tags$p(
-                class="range-fields",
-                tags$div(
-                  id="slider-citas"
-                )
-              )
+          DTOutput("resultados")
 
-            )
-          ),
-          #FECHA PUBLICACIÓN MÍNIMA
-          tags$div(
-            class = "input-field",
-            tags$div(
-              class= "form-group shiny-input-container",
-              tags$label("Fecha de publicación mínima:"),
-              tags$input(id="fecha_publicacion", value = format(Sys.Date(), "%d/%m/%Y"))
-
-            )
-          ),
-          #INDICE H PROMEDIO
-          tags$div(
-            class="input-field",
-            tags$div(
-              class="form-group shiny-input-container",
-              tags$label("Índice H promedio"),
-              tags$p(
-                class="range-fields",
-                tags$div(
-                  id="slider-indiceHProm"
-                )
-              )
-            )
-          ),
-          #CITAS TOTALES
-          tags$div(
-            class="input-field",
-            tags$div(
-              class="form-group shiny-input-container",
-              tags$label(class="divRange","Citas totales"),
-              tags$p(
-                class="range-fields",
-                tags$div(
-                  id="slider-citasTotales"
-                )
-              )
-            )
-          ),
-          #ELECCIÓN PAÍS DEL AUTOR
-          tags$div(
-            class="input-field",
-            tags$div(
-              class="form-group shiny-input-container",
-              selectInput("paises_seleccionados", "Selecciona país(es):", choices = paises, multiple = TRUE)
-            )
-          ),
         )
       )
+
+
+
+
     ),
-
-
-    tags$div(
-      class = "col s12 m9",
-      material_card(
-        title = "Datos obtenidos",
-
-        tags$a(
-          class="waves-effect waves-light btn modal-trigger",
-          href="#modal1",
-          "Exportar datos",
-          tags$i(
-            class="material-icons line",
-            "ios_share"
-          )
-        ),
-        tags$div(
-          id="modal1",
-          class="modal",
-          tags$div(
-            class="modal-content",
-            tags$h4("Modal Header"),
-            tags$p("A bunch of text")
-          ),
-          tags$div(
-            class="modal-footer",
-            tags$a(
-              href="#!",
-              class="modal-close waves-effect btn-flat",
-              "Aceptar"
-            )
-          )
-
-
-        ),
-
-        DTOutput("resultados")
-      )
-    )
-
-
-
-
-  ),
-  tags$script("  document.addEventListener('DOMContentLoaded', function() {
+    tags$script("  document.addEventListener('DOMContentLoaded', function() {
             var sliderIndiceH = document.getElementById('slider-indiceH');
             var sliderPromedioH = document.getElementById('slider-indiceHProm');
             var sliderCitas = document.getElementById('slider-citas');
@@ -301,5 +315,16 @@ ui<- material_page(
 
 ")
 
+  ),
+  material_tab_content(
+    tab_id = "analisis",
+    tags$div(
+      class = "col s12",
+      material_card(
+        h1("AQUÍ MANDA MI PENE")
+    )
+  )
 
+
+)
 )

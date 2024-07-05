@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
   $('#fecha_publicacion').datepicker({
     format: 'dd/mm/yyyy'
   });
@@ -18,6 +19,7 @@ $(document).ready(function() {
         break;
     }
   });
+
 
 
 });

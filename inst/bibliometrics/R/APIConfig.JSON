@@ -1,23 +1,17 @@
-
 [
   {
     "name":"scopus",
     "url": "https://api.elsevier.com/content/search/scopus",
     "key": "9fe5f0fceb3fe06c666cd6217de34c0c"
-
   },
   {
     "name":"wos",
      "url": "https://api.clarivate.com/apis/wos-starter/v1/documents",
      "key": "2396bd34a95f490d69f14a4b69b2dca4a6e5f33a"
-
   },
   {
     "name":"scholar",
     "url": "https://serpapi.com/search.json?engine=google_scholar",
     "key": "4127265015e41d0a7a728742dc8497779a333913ef31bb1e99ac1c0f4f826875"
   }
-
-
 ]
-

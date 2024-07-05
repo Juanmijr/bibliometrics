@@ -444,8 +444,14 @@ nav.brand-logo{
 }
 
 
-
-
 .line{
   line-height: initial !important;
 }
+
+.tabs .tab a .tabs .tab a:hover, .tabs .tab a.active {
+  color: #2bbbad !important;
+
+}
+
+
+.nav
