@@ -34,16 +34,35 @@ ui<- material_page(
       )
     ),
 
-  # Define tabs
-  material_tabs(
-    tabs = c(
-      "Inicio" = "inicio",
-      "Análisis" = "analisis"
+  # TABS
+
+  tags$ul(
+    id="tabs",
+    class="tabs tabs-fixed-width",
+    tags$li(
+      class="tab",
+      id= "liTab1",
+      tags$a(
+        href="#cardHome",
+        "Inicio"
+      )
+    ),
+    tags$li(
+      class="tab",
+      id= "liTab2",
+      tags$a(
+        href="#cardAnalisis",
+        "Análisis"
+      )
     )
   ),
+
+
+
+
   # Define tab content
   material_tab_content(
-    tab_id = "inicio",
+    tab_id = "cardHome",
     #CUERPO COMPLETO DE LA APP
     tags$div(
       class= "row",
@@ -201,9 +220,23 @@ ui<- material_page(
       ),
 
 
+
+
+
       tags$div(
         class = "col s12 m9",
+
         material_card(
+          id="instrucciones",
+          tags$span(
+            class="card-title",
+            "Instrucciones de la aplicación"
+          )
+        ),
+
+
+        material_card(
+          id="resultados",
           tags$span(
             class="card-title center-align",
             "Datos obtenidos"
@@ -223,8 +256,35 @@ ui<- material_page(
             class="modal",
             tags$div(
               class="modal-content",
-              tags$h4("Modal Header"),
-              tags$p("A bunch of text")
+              tags$h4("Exportación de tabla de datos"),
+              tags$div(
+                class = "form-group shiny-input-container",
+                tags$select(
+                  id="select_search",
+                  tags$option("Exportar CSV", value = "CSV", selected="selected"),
+                  tags$option("Exportar PDF", value = "PDF"),
+                  tags$option("Exportar JSON", value = "JSON")
+                ),
+                tags$label("Selecciona opción de búsqueda")
+              ),
+
+              tags$div(
+                class="file-field input-field",
+                tags$div(
+                  class="btn",
+                  tags$span("Seleccionar Carpeta"),
+                  tags$input(
+                    type="file"
+
+                  )
+                ),
+                tags$div(
+                  class="file-path-wrapper",
+                  tags$input(
+                    class="file-path validate", type="text"
+                  )
+                )
+              )
             ),
             tags$div(
               class="modal-footer",
@@ -317,11 +377,12 @@ ui<- material_page(
 
   ),
   material_tab_content(
-    tab_id = "analisis",
+    tab_id = "cardAnalisis",
     tags$div(
       class = "col s12",
       material_card(
-        h1("AQUÍ MANDA MI PENE")
+        verbatimTextOutput("datosAnalisis")
+
     )
   )
 

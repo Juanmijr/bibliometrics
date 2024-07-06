@@ -8,11 +8,27 @@ server <- function(input, output, session) {
 
 
 
+  runjs("$('#liTab2').hide();");
+
+
+  observe({
+
+
+
+    if (nchar(input$searchText) > 0) {
+      runjs("$('#search_button').prop('disabled',false);");
+    } else {
+      runjs("$('#search_button').prop('disabled',true);");
+    }
+  })
 
   observeEvent(input$search_button,{
-    df<-data.frame()
     search_result<-data.frame()
+    df<-data.frame()
     search_query <-input$searchText
+
+
+
 
     selected <- input$selectApi
 
@@ -49,10 +65,19 @@ server <- function(input, output, session) {
 
             ),
             callback = JS(
-              "$(document).on('click', '.analize', function(e){
-                console.log('HE ENTRADO AQUÍ');
-                Shiny.onInputChange('button_clicked', this.id);
-        });"
+              "
+              table.on('click', '.analize',function(){
+                var data = table.row($(this).parents('tr')).data();
+                var rowData = {};
+
+                table.columns().every(function() {
+                  var colIdx = this.index();
+                  var colTitle = table.column(colIdx).header().innerText.trim(); // Obtiene el nombre del encabezado de la columna
+                  rowData[colTitle] = data[colIdx]; // Asigna el valor de la columna al objeto rowData usando el nombre del encabezado
+                });
+
+                Shiny.setInputValue('button_clicked', rowData);
+              });"
             ),
 
           )
@@ -69,10 +94,18 @@ server <- function(input, output, session) {
 
     if (nrow(search_result)>0){
       runjs("$('#cardFilter').show();");
+      runjs("$('#resultados').show();");
+      runjs("$('#instrucciones').hide();");
+
+
 
     }
     else{
       runjs("$('#cardFilter').hide();");
+      runjs("$('#resultados').hide();");
+      runjs("$('#instrucciones').show();");
+
+
 
     }
 
@@ -84,10 +117,19 @@ server <- function(input, output, session) {
 
 
   observeEvent(input$button_clicked, {
-    print("ENTRO EN EL OBSERVER")
 
-    button_id <- input$button_clicked
-    row_clicked <- as.numeric(sub("buttonAnalize_", "", button_id))  # Obtener la fila desde el ID del botón
+    runjs("$('#liTab2').show();");
+
+
+    row <- input$button_clicked
+
+
+    output$datosAnalisis<- renderPrint({
+      row
+    })
+
+    #update_material_side_nav(session, side_nav_tab_id = "cardAnalisis")
+
 
   })
 
