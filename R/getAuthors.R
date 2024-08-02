@@ -1,6 +1,6 @@
 library(httr)
 library(jsonlite)
-
+library(reticulate)
 
 
 #' función para obtener articulos
@@ -14,7 +14,7 @@ library(jsonlite)
 #' @examples
 #' getArticle(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"springer")
 #' getArticle(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"charte")
-getArticle <- function (apis, query){
+getAuthor <- function (apis, query){
   apiConfig<- fromJSON("R/APIConfig.JSON")
 
 
@@ -22,15 +22,12 @@ getArticle <- function (apis, query){
   response<- data.frame()
   first<- TRUE
   for (ap in selected){
-    print(ap)
     apiSelect <- apiConfig[apiConfig$name == ap,]
 
-    if (ap == "wos") {
-      result <- getArticleWos(query, apiSelect)
-    } else if (ap == "scholar") {
-      result <- getArticleGoogle(query, apiSelect)
+   if (ap == "scholar") {
+      result <- getAuthorGoogle(query)
     } else if (ap == "scopus") {
-      result <- getArticleScopus(query, apiSelect)
+      result <- getAuthorScopus(query, apiSelect)
     } else {
       stop("Valor de 'ap' no válido")
     }
@@ -47,31 +44,117 @@ getArticle <- function (apis, query){
   return(response)
 }
 
-getArticleScopus<-function(query, apiSelect){
-  print (apiSelect$url)
-  textQuery=paste0("TITLE-ABS-KEY(",query,")")
+getAuthorScopus<-function(query, apiSelect){
+  print (apiSelect$urlAuthor)
+  textQuery=paste0("AUTHLASTNAME(",query,")")
   print(textQuery)
-  response<- GET(url= apiSelect$url, query=list("apiKey"= apiSelect$key, "query"=textQuery, "count"="25"))
+
+  headers <- add_headers(
+    "X-ELS-APIKey" = apiSelect$key,
+    "X-ELS-Insttoken"= apiSelect$instant,
+    "Accept" = "application/json"
+  )
+
+
+  response<- GET(url= apiSelect$urlAuthor,headers, query=list("query"=textQuery, "count"="25"))
   content<- content(response, "text")
   result <- fromJSON(content, flatten = TRUE)
 
 
 
+  subjectArea= character(length(result$'search-results'$entry$'subject-area'))
+
+  for (i in 1:length(result$'search-results'$entry$'subject-area')) {
+
+    if (!is.null(result[["search-results"]][["entry"]][["subject-area"]][[i]][["$"]])){
+
+      cleaned_vector <- gsub("\\(all\\)", "", result[["search-results"]][["entry"]][["subject-area"]][[i]][["$"]])
+
+      var<- paste(cleaned_vector,collapse=", ")
+
+      subjectArea[i] <- var
+    }
+    else{
+      subjectArea[i]<- NA
+    }
+
+  }
+  name=character(length(result$'search-results'$entry$'name-variant'))
+  surname = character(length(result$'search-results'$entry$'name-variant'))
+
+  for (i in 1:length(result$'search-results'$entry$'name-variant')){
+    if (length(result$'search-results'$entry$'name-variant'[[i]])>0){
+      name[i]<-result$'search-results'$entry$'name-variant'[[i]]$'given-name'[1]
+      surname[i]<-result$'search-results'$entry$'name-variant'[[i]]$'surname'[1]
+
+
+    }
+    else{
+      name[i]<-""
+      surname[i]<-""
+    }
+  }
+
+
   df<- data.frame(
-    "titulo" = result$'search-results'$entry$`dc:title`,
-    'palabras clave' = NA,
-    'autor/es' = result$'search-results'$entry$`dc:creator`,
-    'año' = result$'search-results'$entry$`prism:coverDate`,
-    'nombre fuente' = NA,
-    'ISSN' = result$'search-results'$entry$`prism:issn`,
-    'EISSN' = result$'search-results'$entry$`prism:eIssn`,
-    "citas" = NA,
-    'resumen cita' = NA,
+    "ID" = result$'search-results'$entry$`eid`,
+    'Nombre' = name,
+    'Apellido' = surname,
+    'NumDocumentos' = result$'search-results'$entry$`document-count`,
+    'Afiliación' = result[["search-results"]][["entry"]][["affiliation-current.affiliation-name"]],
+    'NúmeroCitaciones' = NA,
+    'Campos' = subjectArea,
+    'BBDD'= 'scopus',
     stringsAsFactors = FALSE
   )
+
 
 
   return(df)
 
 
 }
+
+
+getAuthorGoogle<-function(query){
+
+
+    python_config <- py_discover_config()
+
+    use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
+
+
+
+    if (!py_module_available("selenium")) {
+      py_install("selenium")
+    }
+
+    if (!py_module_available("pandas")) {
+      py_install("pandas")
+    }
+
+    source_python("R/py/WebScrappingGoogle.py")
+
+    authorsPY <-getAuthors(query)
+    authors <- py_to_r(authorsPY)
+
+
+
+    df<- data.frame(
+      "ID" = authors$ID,
+      'Nombre' = authors$Name,
+      'Apellido' = NA,
+      'NumDocumentos' = NA,
+      'Afiliación' = authors$Affiliation,
+      'NúmeroCitaciones' = authors$"Cited by",
+      'Campos' = authors$Interests,
+      'BBDD'= 'scholar',
+      stringsAsFactors = FALSE
+    )
+
+    return(df)
+
+
+
+}
+

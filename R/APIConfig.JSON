@@ -2,8 +2,11 @@
 [
   {
     "name":"scopus",
-    "url": "https://api.elsevier.com/content/search/scopus",
-    "key": "9fe5f0fceb3fe06c666cd6217de34c0c"
+    "urlArticle": "https://api.elsevier.com/content/search/scopus",
+    "urlAuthor":"https://api.elsevier.com/content/search/author",
+    "urlMetrics":"",
+    "key": "6ae1bd621325c5196a84ed25c171631f",
+    "instant": "62b8aed831987c34f990346189871fa4"
 
   },
   {
@@ -14,7 +17,7 @@
   },
   {
     "name":"scholar",
-    "url": "https://serpapi.com/search.json?engine=google_scholar",
+    "urlArticle": "https://serpapi.com/search.json?engine=google_scholar",
     "key": "4127265015e41d0a7a728742dc8497779a333913ef31bb1e99ac1c0f4f826875"
   }
 

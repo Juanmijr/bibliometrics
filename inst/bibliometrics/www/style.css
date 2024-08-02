@@ -448,10 +448,37 @@ nav.brand-logo{
   line-height: initial !important;
 }
 
-.tabs .tab a .tabs .tab a:hover, .tabs .tab a.active {
-  color: #2bbbad !important;
 
+#loader{
+    position: fixed;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.1);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
 }
 
+.spinner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 4px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  border-top: 4px solid #26A69A;
+  width: 70px;
+  height: 70px;
+  animation: giro 1s linear infinite;
+}
 
-.nav
+@keyframes giro{
+  0%{
+    transform: rotate(0deg);
+  }
+
+  100%{
+    transform: rotate(360deg);
+  }
+}

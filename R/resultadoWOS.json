@@ -1,0 +1,465 @@
+[
+    {
+        "metadata": {
+            "total": 55,
+            "page": 1,
+            "limit": 10
+        },
+        "hits": [
+            {
+                "uid": "WOS:A1977EP15400034",
+                "title": "CHARTE-77 AND HUMAN-RIGHTS MOVEMENT",
+                "types": [
+                    "Editorial material"
+                ],
+                "sourceTypes": [
+                    "Editorial Material"
+                ],
+                "source": {
+                    "sourceTitle": "ESPRIT",
+                    "publishYear": 1977,
+                    "issue": "4-5",
+                    "pages": {
+                        "range": "260-261",
+                        "begin": "260",
+                        "end": "261",
+                        "count": 2
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "PATOCKA, J",
+                            "wosStandard": "PATOCKA, J",
+                            "researcherId": "FVR-6955-2022"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1977EP15400034&DestLinkType=FullRecord&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "issn": "0014-0759"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:A1980JG32700001",
+                "title": "ROYAL CHARTE - SPECIAL ISSUE CELEBRATING 30 YEARS OF THE INSTITUTE",
+                "types": [
+                    "Editorial material"
+                ],
+                "sourceTypes": [
+                    "Editorial Material"
+                ],
+                "source": {
+                    "sourceTitle": "BIOLOGIST",
+                    "publishYear": 1980,
+                    "volume": "27",
+                    "issue": "1",
+                    "pages": {
+                        "range": "1-2",
+                        "begin": "1",
+                        "end": "2",
+                        "count": 2
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "CLARKE, T",
+                            "wosStandard": "CLARKE, T",
+                            "researcherId": "GBL-3053-2022"
+                        },
+                        {
+                            "displayName": "STEVENSON, JP",
+                            "wosStandard": "STEVENSON, JP",
+                            "researcherId": "EAA-9755-2022"
+                        },
+                        {
+                            "displayName": "SUTTON, D",
+                            "wosStandard": "SUTTON, D",
+                            "researcherId": "IIA-3012-2023"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1980JG32700001&DestLinkType=FullRecord&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "issn": "0006-3347"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:A1985ASB3200006",
+                "title": "THE CHARTE-DE-LARTISANAT + DEFINING THE RIGHTS OF THE FRENCH ARTISAN + INTERVIEW",
+                "types": [
+                    "Editorial material"
+                ],
+                "sourceTypes": [
+                    "Editorial Material"
+                ],
+                "source": {
+                    "sourceTitle": "CONTEMPORARY FRENCH CIVILIZATION",
+                    "publishYear": 1985,
+                    "volume": "9",
+                    "issue": "2",
+                    "pages": {
+                        "range": "223-229",
+                        "begin": "223",
+                        "end": "229",
+                        "count": 7
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "MICHAEL, CV",
+                            "wosStandard": "MICHAEL, CV",
+                            "researcherId": "IOE-8081-2023"
+                        },
+                        {
+                            "displayName": "CHARRETIER, M",
+                            "wosStandard": "CHARRETIER, M",
+                            "researcherId": "EQA-0019-2022"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1985ASB3200006&DestLinkType=FullRecord&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "doi": "10.3828/cfc.1985.9.2.006",
+                    "issn": "0147-9156"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:A1990ED44200024",
+                "title": "WEILL LA 'BALLADE DE LA GRANDE CHARTE' + HENSCHEL, TYL, CALAMINUS, CLEMENS, PRO-MUSICA-KOLN, KOLNER-RUNDFUNKSORCHESTER, LATHAM-KONIG - CAPRICCIO-60-012-1",
+                "types": [
+                    "Review"
+                ],
+                "sourceTypes": [
+                    "Record Review"
+                ],
+                "source": {
+                    "sourceTitle": "AVANT SCENE OPERA",
+                    "publishYear": 1990,
+                    "publishMonth": "SEP-OCT",
+                    "issue": "134",
+                    "pages": {
+                        "range": "133-134",
+                        "begin": "133",
+                        "end": "134",
+                        "count": 2
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "FLINOIS, P",
+                            "wosStandard": "FLINOIS, P",
+                            "researcherId": "CQL-6384-2022"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1990ED44200024&DestLinkType=FullRecord&DestApp=WOS_CPL",
+                    "references": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1990ED44200024&DestLinkType=CitedReferences&DestApp=WOS",
+                    "related": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1990ED44200024&DestLinkType=RelatedRecords&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "issn": "0295-1371"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:A1992HZ19200005",
+                "title": "THE LEGAL TRADE-UNIONS OF RAILWAYMEN AND THE VICHY REGIME",
+                "types": [
+                    "Article"
+                ],
+                "sourceTypes": [
+                    "Article"
+                ],
+                "source": {
+                    "sourceTitle": "MOUVEMENT SOCIAL",
+                    "publishYear": 1992,
+                    "publishMonth": "JAN-MAR",
+                    "issue": "158",
+                    "pages": {
+                        "range": "87-116",
+                        "begin": "87",
+                        "end": "116",
+                        "count": 30
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "RIBEILL, G",
+                            "wosStandard": "RIBEILL, G",
+                            "researcherId": "DPJ-9021-2022"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1992HZ19200005&DestLinkType=FullRecord&DestApp=WOS_CPL",
+                    "references": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1992HZ19200005&DestLinkType=CitedReferences&DestApp=WOS",
+                    "related": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1992HZ19200005&DestLinkType=RelatedRecords&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "doi": "10.2307/3779328",
+                    "issn": "0027-2671"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:A1992LJ59700023",
+                "title": "WEERTS,JEAN,JOSEPH (1846-1927) AND MONUMENTAL PAINTING - LA 'CHARTE DES DRAPIERS DE ROUBAIX'",
+                "types": [
+                    "Article"
+                ],
+                "sourceTypes": [
+                    "Article"
+                ],
+                "source": {
+                    "sourceTitle": "REVUE DU NORD",
+                    "publishYear": 1992,
+                    "publishMonth": "JUL-DEC",
+                    "volume": "74",
+                    "issue": "297-98",
+                    "pages": {
+                        "range": "785-809",
+                        "begin": "785",
+                        "end": "809",
+                        "count": 25
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "ACHERELENOIR, C",
+                            "wosStandard": "ACHERELENOIR, C",
+                            "researcherId": "CBL-4273-2022"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1992LJ59700023&DestLinkType=FullRecord&DestApp=WOS_CPL",
+                    "references": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1992LJ59700023&DestLinkType=CitedReferences&DestApp=WOS",
+                    "related": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:A1992LJ59700023&DestLinkType=RelatedRecords&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "doi": "10.3406/rnord.1992.4777",
+                    "issn": "0035-2624"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:000077611800010",
+                "title": "Linguistic impact of NAFTA and the Charte de la Langue Francaise on the Quebec business world",
+                "types": [
+                    "Meeting"
+                ],
+                "sourceTypes": [
+                    "Proceedings Paper"
+                ],
+                "source": {
+                    "sourceTitle": "TWELFTH EDITION OF THE JDL CONFERENCE",
+                    "publishYear": 1998,
+                    "volume": "215",
+                    "pages": {
+                        "range": "75-82",
+                        "begin": "75",
+                        "end": "82",
+                        "count": 8
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "Moisan, J",
+                            "wosStandard": "Moisan, J",
+                            "researcherId": "DJS-7322-2022"
+                        }
+                    ],
+                    "bookEditors": [
+                        {
+                            "displayName": "Boissonneault, C"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000077611800010&DestLinkType=FullRecord&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "issn": "1196-121X",
+                    "isbn": "2-89219-272-2"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:000167758000010",
+                "title": "The first global map of the distribution of human diseases:: Friedrich!Schnurrer's 'Charte uber die geographische Ausbreitung der Krankheiten' (1827)",
+                "types": [
+                    "Meeting"
+                ],
+                "sourceTypes": [
+                    "Proceedings Paper"
+                ],
+                "source": {
+                    "sourceTitle": "MEDICAL GEOGRAPHY IN HISTORICAL PERSPECTIVE",
+                    "publishYear": 2000,
+                    "issue": "20",
+                    "pages": {
+                        "range": "176-185",
+                        "begin": "176",
+                        "end": "185",
+                        "count": 10
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "Brömer, R",
+                            "wosStandard": "Brömer, R",
+                            "researcherId": "DVD-3199-2022"
+                        }
+                    ],
+                    "bookEditors": [
+                        {
+                            "displayName": "Rupke, NA"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000167758000010&DestLinkType=FullRecord&DestApp=WOS_CPL",
+                    "references": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000167758000010&DestLinkType=CitedReferences&DestApp=WOS",
+                    "related": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000167758000010&DestLinkType=RelatedRecords&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "isbn": "0-85484-072-9",
+                    "pmid": "11769931"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:000168668500010",
+                "title": "The first global map of the distribution of human diseases:: Friedrcich!Schnurrer's 'Charte uber die geographische Ausbreitung der Krankheiten' (1827)",
+                "types": [
+                    "Article"
+                ],
+                "sourceTypes": [
+                    "Article"
+                ],
+                "source": {
+                    "sourceTitle": "MEDICAL HISTORY",
+                    "publishYear": 2000,
+                    "supplement": "20",
+                    "pages": {
+                        "range": "176-185",
+                        "begin": "176",
+                        "end": "185",
+                        "count": 10
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "Brömer, R",
+                            "wosStandard": "Brömer, R",
+                            "researcherId": "DVD-3199-2022"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000168668500010&DestLinkType=FullRecord&DestApp=WOS_CPL",
+                    "references": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000168668500010&DestLinkType=CitedReferences&DestApp=WOS",
+                    "related": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000168668500010&DestLinkType=RelatedRecords&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "issn": "0025-7273",
+                    "eissn": "2048-8343",
+                    "pmid": "11769931"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            },
+            {
+                "uid": "WOS:000421151600006",
+                "title": "La Charte des droits et libertes de la personne : pour qui et jusqu'ou ?",
+                "types": [
+                    "Review"
+                ],
+                "sourceTypes": [
+                    "Film Review"
+                ],
+                "source": {
+                    "sourceTitle": "CAHIERS DE DROIT",
+                    "publishYear": 2006,
+                    "publishMonth": "JUN",
+                    "volume": "47",
+                    "issue": "2",
+                    "pages": {
+                        "range": "418-+",
+                        "begin": "418",
+                        "end": "+",
+                        "count": 5
+                    }
+                },
+                "names": {
+                    "authors": [
+                        {
+                            "displayName": "Samson, Melanie",
+                            "wosStandard": "Samson, M",
+                            "researcherId": "FVS-9432-2022"
+                        }
+                    ]
+                },
+                "links": {
+                    "record": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000421151600006&DestLinkType=FullRecord&DestApp=WOS_CPL",
+                    "references": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000421151600006&DestLinkType=CitedReferences&DestApp=WOS",
+                    "related": "https://www.webofscience.com/api/gateway?GWVersion=2&SrcApp=bibliometrics15&SrcAuth=WosAPI&KeyUT=WOS:000421151600006&DestLinkType=RelatedRecords&DestApp=WOS_CPL"
+                },
+                "citations": [],
+                "identifiers": {
+                    "doi": "10.7202/043891ar",
+                    "issn": "0007-974X",
+                    "eissn": "1918-8218"
+                },
+                "keywords": {
+                    "authorKeywords": []
+                }
+            }
+        ]
+    }
+]

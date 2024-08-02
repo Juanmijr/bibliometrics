@@ -10,7 +10,6 @@ library(jsonlite)
 #'TENGO QUE ESCRIBIR ESTO
 #' @return devuelve dataframe de los artículos de las apis a buscar
 #' @export
-#'
 #' @examples
 #' getArticle(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"springer")
 #' getArticle(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"charte")
@@ -49,25 +48,32 @@ getArticle <- function (apis, query){
 
 
 getArticleScopus<-function(query, apiSelect){
-  print (apiSelect$url)
+  print (apiSelect$urlArticle)
   textQuery=paste0("TITLE-ABS-KEY(",query,")")
   print(textQuery)
-  response<- GET(url= apiSelect$url, query=list("apiKey"= apiSelect$key, "query"=textQuery, "count"="25"))
+
+  headers <- add_headers(
+    "X-ELS-APIKey" = apiSelect$key,
+    "X-ELS-Insttoken"= apiSelect$instant,
+    "Accept" = "application/json"
+  )
+
+  response<- GET(url= apiSelect$urlArticle ,headers, query=list( "query"=textQuery, "count"="25"))
   content<- content(response, "text")
   result <- fromJSON(content, flatten = TRUE)
 
 
-
   df<- data.frame(
+    "ID" = result$'search-results'$entry$`eid`,
     "Titulo" = result$'search-results'$entry$`dc:title`,
     'Palabras clave' = NA,
     'Autor' = result$'search-results'$entry$`dc:creator`,
     'Año' = result$'search-results'$entry$`prism:coverDate`,
     'Source' = NA,
-    'ISSN' = result$'search-results'$entry$`prism:issn`,
-    'EISSN' = result$'search-results'$entry$`prism:eIssn`,
-    "Citas" = NA,
+    'DOI' = result$'search-results'$entry$`prism:doi`,
+    "Citas" = result$'search-results'$entry$`citedby-count`,
     'Summary' = NA,
+    'BBDD'= 'scopus',
     stringsAsFactors = FALSE
   )
 
@@ -108,16 +114,16 @@ getArticleWos<- function(query, apiSelect){
 
   df<- data.frame(
 
-
+    "ID" = result$hits$uid,
     "Titulo" = result$hits$title,
     'Palabras clave' = NA,
     'Autor' = vector_nombres,
     'Año' = result$hits$source$publishYear,
     'Source' = result$hits$source$sourceTitle,
-    'ISSN' = result$hits$identifiers$issn,
-    'EISSN' = result$hits$identifiers$eissn,
+    'DOI' = result$hits$identifiers$doi,
     "Citas" = NA,
     'Summary' = NA,
+    'BBDD'= 'wos',
     stringsAsFactors = FALSE
   )
 
@@ -134,15 +140,16 @@ getArticleGoogle<- function(query, apiSelect){
 
 
   df<- data.frame(
+    "ID" = result$"organic_results"$source-id,
     "Titulo" = result$"organic_results"$title,
     'Palabras clave' = result$"organic_results"$snippet,
     'Autor' = NA,
     'Año' = NA,
     'Source' = NA,
-    'ISSN' = NA,
-    'EISSN' = NA,
+    'DOI' = NA,
     "Citas" = result$"organic_results"$"inline_links"$"cited_by"$total,
     'Summary' = result$"organic_results"$"publication_info"$summary,
+    'BBDD'= 'scholar',
     stringsAsFactors = FALSE
   )
 
@@ -151,3 +158,5 @@ getArticleGoogle<- function(query, apiSelect){
 
   return(df)
 }
+
+
