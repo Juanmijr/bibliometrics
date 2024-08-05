@@ -10,10 +10,10 @@
 #'TENGO QUE ESCRIBIR ESTO
 #'@return None
 #' @examples
-#' setEmail("prueba@red.ujaen.es")
+#' setEmail("prueba")
 
-setEmail <- function (value){
-  assign("email",value, envir=.bibliometricsEnv)
+setUser <- function (value){
+  assign("user",value, envir=.bibliometricsEnv)
 }
 
 

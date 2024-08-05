@@ -23,7 +23,7 @@ def safe_find_element(driver, by, value):
 
 
 
-def getMetrics(eid):
+def getMetrics(eid, user, password):
     driver = inicializar_navegador()
     time.sleep(4)
     select_element = driver.find_element(By.XPATH, '//*[@id="onetrust-accept-btn-handler"]')
@@ -32,7 +32,7 @@ def getMetrics(eid):
     time.sleep(1)
 
     input = driver.find_element(By.XPATH, '//*[@id="bdd-email"]')
-    input.send_keys("jmjr0007@red.ujaen.es")
+    input.send_keys(user+"@red.ujaen.es")
 
     time.sleep(1)
 
@@ -52,10 +52,10 @@ def getMetrics(eid):
     time.sleep(2)
 
     input = driver.find_element(By.XPATH, '//*[@id="username"]')
-    input.send_keys("jmjr0007")
+    input.send_keys(user)
 
     input = driver.find_element(By.XPATH, '//*[@id="password"]')
-    input.send_keys("Juanmiguel0!")
+    input.send_keys(password)
 
     button = driver.find_element(By.XPATH, '//*[@id="submit_button"]')
     button.click()

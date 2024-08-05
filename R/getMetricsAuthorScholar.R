@@ -1,17 +1,7 @@
 library(jsonlite)
 library(reticulate)
 
-
-
-#' Obtener Métricas de Scopus mediante web scrapping
-#'
-#' @param uid del artículo
-#'
-#' @return diccionario con métricas
-#' @export
-#' @examples
-#' getMetricsScopus("2-s2.0-85187374370")
-getMetricsScopus <- function(uid) {
+getMetrics <- function(uid) {
 
   python_config <- py_discover_config()
 
@@ -27,9 +17,9 @@ getMetricsScopus <- function(uid) {
     py_install("pandas")
   }
 
-  source_python("R/py/WebScrappingScopus.py")
+  source_python("R/py/WebScrappingGoogle.py")
 
-  metrics <-getMetrics(uid, getVariable('user'), getVariable('pass'))
+  metrics <-getAuthors(uid)
 
   dfMetrics <- py_to_r(metrics)
 

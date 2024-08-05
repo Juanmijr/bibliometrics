@@ -11,7 +11,6 @@ def inicializar_navegador():
     options.add_argument('--start-maximized')
     options.add_argument('--disable-extensions')
     options.add_argument("--incognito")
-    #driver_path = 'C:\\SeleniumDrivers\\chromedriver.exe'
     driver = webdriver.Chrome(options=options)
     return driver
 
@@ -52,7 +51,7 @@ def getAuthors(query):
     return pd.DataFrame(authors_data)
 
 
-def getMetrics(id):
+def getMetricsAuthor(id):
     driver=inicializar_navegador()
     driver.get("https://scholar.google.es/citations?hl=es&user="+id)
         # Encuentra la tabla por su ID
@@ -76,6 +75,6 @@ def getMetrics(id):
             'Desde 2019': since_2019
         }
     driver.quit()
-    return table_data
+    return pd.DataFrame(table_data)
 
 

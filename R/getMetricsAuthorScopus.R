@@ -1,24 +1,34 @@
 library(httr)
 library(jsonlite)
 
-getArticleGoogle<- function(query, apiSelect){
+getMetricsAuthor<- function(query, apis){
 
-  response<- GET(url=apiSelect$url, query=list("api_key"= apiSelect$key, "q" = query, "hl"= "es"))
+  apiConfig<- fromJSON("R/APIConfig.JSON")
+  apiSelect <- apiConfig[apiConfig$name == apis,]
+
+
+
+  headers <- add_headers(
+    "X-ELS-APIKey" = apiSelect$key,
+    "X-ELS-Insttoken"= apiSelect$instant,
+    "Accept" = "application/json"
+  )
+
+  response<- GET(url= apiSelect$urlMetricsAuthor,headers, query=list("eid"=query, "count"="25", "view"="ENHANCED"))
   content<- content(response, "text")
-  result <- fromJSON(content)
+  result <- fromJSON(content, flatten = TRUE)
 
 
   df<- data.frame(
-    "ID" = result$"organic_results"$source-id,
-    "Titulo" = result$"organic_results"$title,
-    'Palabras clave' = result$"organic_results"$snippet,
-    'Autor' = NA,
-    'Año' = NA,
-    'Source' = NA,
-    'DOI' = NA,
-    "Citas" = result$"organic_results"$"inline_links"$"cited_by"$total,
-    'Summary' = result$"organic_results"$"publication_info"$summary,
-    'BBDD'= 'scholar',
+    "Orcid" = result[["author-retrieval-response"]][["coredata.orcid"]],
+    'Nombre' = paste(result[["author-retrieval-response"]][["author-profile.preferred-name.given-name"]],result[["author-retrieval-response"]][["author-profile.preferred-name.surname"]], sep=" "),
+    "NumDocs" = result[["author-retrieval-response"]][["coredata.document-count"]],
+    'NumCitas' = result[["author-retrieval-response"]][["coredata.citation-count"]],
+    'NumDocsCitados' = result[["author-retrieval-response"]][["coredata.cited-by-count"]],
+    'indice-h' =  result[["author-retrieval-response"]][["h-index"]],
+    'numCoAutor' = result[["author-retrieval-response"]][["coauthor-count"]],
+    'Afiliacion' = result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.preferred-name.$"]],
+    'lugarAfiliacion' = paste(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.city"]],result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.state"]],result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.country"]],sep=", "),
     stringsAsFactors = FALSE
   )
 
@@ -26,4 +36,5 @@ getArticleGoogle<- function(query, apiSelect){
 
 
   return(df)
+
 }

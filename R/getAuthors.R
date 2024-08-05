@@ -45,9 +45,7 @@ getAuthor <- function (apis, query){
 }
 
 getAuthorScopus<-function(query, apiSelect){
-  print (apiSelect$urlAuthor)
   textQuery=paste0("AUTHLASTNAME(",query,")")
-  print(textQuery)
 
   headers <- add_headers(
     "X-ELS-APIKey" = apiSelect$key,
