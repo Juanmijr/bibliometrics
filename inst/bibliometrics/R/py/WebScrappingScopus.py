@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 import time
 import pandas as pd
 
@@ -46,9 +47,12 @@ def getMetrics(eid, user, password):
 
     time.sleep(2)
     
-    element = driver.find_element(By.XPATH, "//div[contains(text(), 'SIDUJA Servicio de Identidad - Universidad de Jaén')]")
-    element.click()
-    
+    try:
+        element = driver.find_element(By.XPATH, "//div[contains(text(), 'SIDUJA Servicio de Identidad - Universidad de Jaén')]")
+        element.click()
+    except NoSuchElementException:
+        pass
+
     time.sleep(2)
 
     input = driver.find_element(By.XPATH, '//*[@id="username"]')

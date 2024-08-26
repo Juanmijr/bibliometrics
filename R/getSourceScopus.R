@@ -55,6 +55,7 @@ getSourceScopus<-function(query, apiSelect){
   }
 
 
+
   return(df)
 
 

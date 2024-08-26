@@ -61,22 +61,23 @@ def getMetricsAuthor(id):
     rows = table.find_elements(By.TAG_NAME, 'tr')
 
     # Lista para almacenar los datos de la tabla
-    table_data = {}
+    table_data = []
 
     # Itera sobre cada fila y extrae los datos
     for row in rows[1:]:  # Saltar la primera fila de encabezados
         cells = row.find_elements(By.TAG_NAME, 'td')
-        metric = cells[0].text.strip()
-        total = cells[1].text.strip()
-        since_2019 = cells[2].text.strip()
-        
-        table_data[metric]= {
-            'Total': total,
-            'Desde 2019': since_2019
-        }
+        if len(cells) >= 3:  # Asegúrate de que hay suficientes celdas en la fila
+            metric = cells[0].text.strip()
+            total = cells[1].text.strip()
+            since_2019 = cells[2].text.strip()
+            
+            table_data.append({
+                'Métrica': metric,
+                'Total': total,
+                'Desde 2019': since_2019
+            })
+            
     driver.quit()
-    
-    print(table_data)
     
     return pd.DataFrame(table_data)
 

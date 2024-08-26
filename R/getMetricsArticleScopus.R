@@ -13,6 +13,8 @@ library(reticulate)
 #' getMetricsScopus("2-s2.0-85187374370")
 getMetricsScopus <- function(uid) {
 
+  readRenviron(".Renviron")
+
   python_config <- py_discover_config()
 
   use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
@@ -29,7 +31,9 @@ getMetricsScopus <- function(uid) {
 
   source_python("R/py/WebScrappingScopus.py")
 
-  metrics <-getMetrics(uid, getVariable('user'), getVariable('pass'))
+
+
+  metrics <-getMetrics(uid, Sys.getenv("USER"), Sys.getenv("PASSWORD"))
 
   dfMetrics <- py_to_r(metrics)
 

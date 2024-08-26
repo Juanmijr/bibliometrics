@@ -1,7 +1,16 @@
 library(jsonlite)
 library(reticulate)
 
-getMetrics <- function(uid) {
+#' Obtener métricas de Autores de Google Scholar
+#'
+#' @param uid id de Google Scholar
+#'
+#' @return dataframe de datos métricos
+#' @export
+#'
+#' @examples
+#'getMetricsAuthorScholar("i8l_80EAAAAJ")
+getMetricsAuthorScholar <- function(uid) {
 
   python_config <- py_discover_config()
 
@@ -19,9 +28,11 @@ getMetrics <- function(uid) {
 
   source_python("R/py/WebScrappingGoogle.py")
 
-  metrics <-getMetrics(uid)
+  metrics <-getMetricsAuthor(uid)
 
   dfMetrics <- py_to_r(metrics)
+
+  View(dfMetrics)
 
   return(dfMetrics)
 }

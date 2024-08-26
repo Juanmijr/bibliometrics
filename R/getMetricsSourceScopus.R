@@ -14,20 +14,35 @@ library(jsonlite)
 library(httr)
 library(jsonlite)
 
-getMetricsSourceScopus <- function(query, api) {
-  print("HE ENTRADO A GETMETRICSSOURCESCOUPUS")
+getMetricsSourceScopus <- function(query, api, titleSource=NULL) {
   apiConfig <- fromJSON("R/APIConfig.JSON")
   apiSelect <- apiConfig[apiConfig$name == api,]
 
-  urlISSN <- paste(apiSelect$urlSource, "/issn/", query, sep = "")
+  if(!is.null(query)){
+    urlISSN <- paste(apiSelect$urlSource, "/issn/", query, sep = "")
 
-  headers <- add_headers(
-    "X-ELS-APIKey" = apiSelect$key,
-    "X-ELS-Insttoken" = apiSelect$instant,
-    "Accept" = "application/json"
-  )
+    headers <- add_headers(
+      "X-ELS-APIKey" = apiSelect$key,
+      "X-ELS-Insttoken" = apiSelect$instant,
+      "Accept" = "application/json"
+    )
 
-  response <- GET(url = urlISSN, headers, query = list(view = "enhanced"))
+    response <- GET(url = urlISSN, headers, query = list(view = "enhanced"))
+
+  }
+  else{
+
+    headers <- add_headers(
+      "X-ELS-APIKey" = apiSelect$key,
+      "X-ELS-Insttoken" = apiSelect$instant,
+      "Accept" = "application/json"
+    )
+    response <- GET(url = apiSelect$urlSource, headers, query = list(title=titleSource,view = "enhanced"))
+
+  }
+
+
+
   content <- content(response, "text")
   result <- fromJSON(content, flatten = TRUE)
 
@@ -36,11 +51,20 @@ getMetricsSourceScopus <- function(query, api) {
 
   entry <- result[["serial-metadata-response"]][["entry"]]
 
+
+  get_value <- function(data, key) {
+    if (!is.null(data[[key]])) {
+      return(data[[key]])
+    } else {
+      return(NA)
+    }
+  }
+
   df <- data.frame(
-    "ISSN" = entry[["prism:issn"]],
-    "Editorial" = entry[["dc:publisher"]],
-    'Titulo' = entry[["dc:title"]],
-    'AnoInicio' = entry[["coverageStartYear"]],
+    "ISSN" = get_value(entry, "prism:issn"),
+    "Editorial" = get_value(entry, "dc:publisher"),
+    'Titulo' = get_value(entry, "dc:title"),
+    'AnoInicio' = get_value(entry, "coverageStartYear"),
     stringsAsFactors = FALSE
   )
 

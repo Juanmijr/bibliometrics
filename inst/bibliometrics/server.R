@@ -146,7 +146,6 @@ server <- function(input, output, session) {
                           "source" = bibliometrics::getSource(selected_api, search_query)
       )
 
-      View(df_switch)
 
 
 
@@ -166,7 +165,7 @@ server <- function(input, output, session) {
         removeUI("select-selectBD")
 
 
-      if (!'Error' %in% names(filtered_data)){
+      if (!'error' %in% names(filtered_data)){
         if (nrow(filtered_data) > 0) {
           if ('Año' %in% names(filtered_data) && !all(is.null(filtered_data$Año))){
             output$year <- renderUI({
@@ -255,7 +254,7 @@ server <- function(input, output, session) {
 
       }
         else{
-          runjs("$('#cardFilter').show(); $('#resultados').hide(); $('#instrucciones').hide(); $('#errorResultados').show();")
+          runjs("$('#cardFilter').hide(); $('#resultados').hide(); $('#instrucciones').hide(); $('#errorResultados').show();")
 
         }
 
@@ -268,45 +267,42 @@ server <- function(input, output, session) {
 
 
 
-  # Observa los cambios en los filtros
-  # Reactive para manejar la actualización de datos filtrados
   filtered_data <- reactive({
 
-
     if (nrow(df()) > 0) {
-
 
       filtered <- df()
 
       # Filtrado por año
-
-      if (!is.null(input$selectYear) && "Año" %in% colnames(filtered) && !all(is.na(filtered$Año))) {
-        filtered <- filtered[filtered$Año %in% input$selectYear, ]
+      if (!is.null(input$selectYear) && "Año" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$Año) | filtered$Año %in% input$selectYear, ]
       }
 
       # Filtrado por DOI
-      if (!is.null(input$selectDOI)  && "DOI" %in% colnames(filtered) && !all(is.na(filtered$DOI))) {
-        filtered <- filtered[filtered$DOI %in% input$selectDOI, ]
+      if (!is.null(input$selectDOI) && "DOI" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$DOI) | filtered$DOI %in% input$selectDOI, ]
       }
 
       # Filtrado por autor
-      if (!is.null(input$selectAuthor)  && "Autor" %in% colnames(filtered) && !all(is.na(filtered$Autor))) {
-        filtered <- filtered[filtered$Autor %in% input$selectAuthor, ]
+      if (!is.null(input$selectAuthor) && "Autor" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$Autor) | filtered$Autor %in% input$selectAuthor, ]
       }
 
       # Filtrado por número de citas
-      if (!is.null(input$sliderCitesNum)  && "Citas" %in% colnames(filtered) && !all(is.na(filtered$Citas))) {
-        filtered <- filtered[filtered$Citas >= input$sliderCitesNum[1] & filtered$Citas <= input$sliderCitesNum[2], ]
+      if (!is.null(input$sliderCitesNum) && "Citas" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$Citas) |
+                               (filtered$Citas >= input$sliderCitesNum[1] & filtered$Citas <= input$sliderCitesNum[2]), ]
       }
 
       # Filtrado por número de documentos
-      if (!is.null(input$sliderDocsNum)  && "NumDocumentos" %in% colnames(filtered) && !all(is.na(filtered$NumDocumentos))) {
-        filtered <- filtered[filtered$NumDocumentos >= input$sliderDocsNum[1] & filtered$NumDocumentos <= input$sliderDocsNum[2], ]
+      if (!is.null(input$sliderDocsNum) && "NumDocumentos" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$NumDocumentos) |
+                               (filtered$NumDocumentos >= input$sliderDocsNum[1] & filtered$NumDocumentos <= input$sliderDocsNum[2]), ]
       }
 
       # Filtrado por base de datos (BD)
-      if (!is.null(input$selectBD)  && "BD" %in% colnames(filtered) && !all(is.na(filtered$BD))) {
-        filtered <- filtered[filtered$BD %in% input$selectBD, ]
+      if (!is.null(input$selectBD) && "BD" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$BD) | filtered$BD %in% input$selectBD, ]
       }
 
       # Agrega una columna para el botón de análisis
@@ -316,12 +312,12 @@ server <- function(input, output, session) {
       )
 
       return(filtered)
-    }
-    else{
+    } else {
       return(NULL)
     }
 
   })
+
 
 
   observe({
@@ -548,153 +544,132 @@ server <- function(input, output, session) {
         # No hay código para esta condición
       } else if (row$BD == "scopus") {
         metrics <- bibliometrics::getMetricsScopus(row$ID)
-        View(metrics)
 
         runjs("$('#loader').fadeOut();")
         runjs("$('#liTab2').show();")
 
-        visit_all <- as.numeric(metrics[["plumx_metrics"]][["captures"]][["readers"]])
-        visit_actually <- as.numeric(metrics[["views_count"]][["total_views"]])
-        visit_rest <- visit_all - visit_actually
+        # Comprobar si todas las métricas relevantes son NULL
+        if (is.null(metrics[["scopus_metrics"]][["citations_in_scopus"]]) &&
+            is.null(metrics[["scopus_metrics"]][["percentile"]]) &&
+            is.null(metrics[["scopus_metrics"]][["field_weighted_citation_impact"]]) &&
+            is.null(metrics[["views_count"]][["total_views"]]) &&
+            is.null(metrics[["views_count"]][["years"]]) &&
+            is.null(metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]) &&
+            is.null(metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]) &&
+            is.null(metrics[["plumx_metrics"]][["mentions"]][["references"]])) {
 
-
-        labelsVisit <- c(paste(
-          "Visitas desde",
-          str_extract(metrics[["views_count"]][["years"]], "\\d{4}-\\d{4}")
-        ),
-        "Visitas anteriores")
-        valorsVisit <- c(visit_actually, visit_rest)
-
-
-        print(paste("VALOR ACTUAL", valorsVisit[1], "VALOR TOTAL", valorsVisit[2]))
-
-        output$analisis <- renderUI({
-          conditional_cards <- if ( all(!is.na(valorsVisit))) {
-            tagList(
-              material_column(
-                width = 6,
-                material_card(
-                  title = "Análisis de visitas:",
-                  depth = 5,
-                  plot_ly(
-                    labels = labelsVisit,
-                    values = valorsVisit,
-                    type = "pie"
-                  )
-                )
-              ),
-              material_column(
-                width = 6,
-                material_card(
-                  title = "Otros datos del artículo:",
-                  depth = 5,
-                  plot_ly(
-                    x = c(
-                      names(metrics[["plumx_metrics"]][["mentions"]])[1],
-                      names(metrics[["plumx_metrics"]][["mentions"]])[2],
-                      names(metrics[["plumx_metrics"]][["mentions"]])[3]
-                    ),
-                    y = c(
-                      # Reemplaza NULL con 0 usando ifelse
-                      as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]),
-                                        0,
-                                        metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]])),
-                      as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]),
-                                        0,
-                                        metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]])),
-                      as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["references"]]),
-                                        0,
-                                        metrics[["plumx_metrics"]][["mentions"]][["references"]]))
-                    ),
-                    type = "bar"
-                  )
-                )
-              )
-
+          # Si todas las métricas son NULL, mostrar un mensaje de error
+          output$analisis <- renderUI({
+            div(
+            id = "errorAnalisis",
+            div(
+              class = "error-message",
+              strong("ERROR"),
+              "NO SE PUEDEN OBTENER DATOS PARA ANALIZAR"
             )
-          } else {
+          )
+          })
+        } else {
+          # Continuar con el análisis y renderizado si al menos una métrica no es NULL
 
-            material_column(
-              width = 6,
-              material_card(
-                title = "Otros datos del artículo:",
-                depth = 5,
-                plot_ly(
-                  x = c(
-                    names(metrics[["plumx_metrics"]][["mentions"]])[1],
-                    names(metrics[["plumx_metrics"]][["mentions"]])[2],
-                    names(metrics[["plumx_metrics"]][["mentions"]])[3]
-                  ),
-                  y = c(
-                    # Reemplaza NULL con 0 usando ifelse
-                    as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]),
-                                      0,
-                                      metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]])),
-                    as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]),
-                                      0,
-                                      metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]])),
-                    as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["references"]]),
-                                      0,
-                                      metrics[["plumx_metrics"]][["mentions"]][["references"]]))
-                  ),
-                  type = "bar"
-                )
-              )
-            )
+          visit_all <- as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["captures"]][["readers"]]), 0, metrics[["plumx_metrics"]][["captures"]][["readers"]]))
+          visit_actually <- as.numeric(ifelse(is.null(metrics[["views_count"]][["total_views"]]), 0, metrics[["views_count"]][["total_views"]]))
+          visit_rest <- visit_all - visit_actually
 
-          }
+          labelsVisit <- c(
+            paste("Visitas desde", str_extract(metrics[["views_count"]][["years"]], "\\d{4}-\\d{4}")),
+            "Visitas anteriores"
+          )
+          valorsVisit <- c(visit_actually, visit_rest)
 
-          # Renderizar UI
-          material_card(
-            title = paste("Análisis de", clean_text(row$Titulo), sep = " "),
-            tags$div(
-              class = "container",
-              tags$div(
-                class = "masonry row",
-                style = "position: relative;",
-                material_row(
-                  material_column(
-                    width = 4,
-                    material_card(
-                      title = "Número de citaciones",
-                      depth = 5,
-                      tags$p(paste(
-                        "Número de percentil: ",
-                        gsub("th", "º", metrics[["scopus_metrics"]][["percentile"]]),
-                        sep = " "
-                      )),
-                      tags$div(style = "text-align: center;", tags$h3(metrics[["scopus_metrics"]][["citations_in_scopus"]]))
-                    )
-                  ),
-                  material_column(
-                    width = 4,
-                    material_card(
-                      title = "Número de visitas",
-                      depth = 5,
-                      tags$p(
-                        gsub("Views count", "Desde", metrics[["views_count"]][["years"]])
-                      ),
-                      tags$div(style = "text-align: center;", tags$h3(metrics[["views_count"]][["total_views"]]))
-                    )
-                  ),
-                  material_column(
-                    width = 4,
-                    material_card(
-                      title = "Índice Feild Weight Citation Impact (FWCI)",
-                      depth = 5,
-                      tags$div(style = "text-align: center;", tags$h3(metrics[["scopus_metrics"]][["field_weighted_citation_impact"]]))
+          output$analisis <- renderUI({
+            conditional_cards <- if (all(!is.na(valorsVisit))) {
+              tagList(
+                material_column(
+                  width = 6,
+                  material_card(
+                    title = "Análisis de visitas:",
+                    depth = 5,
+                    plot_ly(
+                      labels = labelsVisit,
+                      values = valorsVisit,
+                      type = "pie"
                     )
                   )
                 ),
-                material_row(conditional_cards)
+                material_column(
+                  width = 6,
+                  material_card(
+                    title = "Otros datos del artículo:",
+                    depth = 5,
+                    plot_ly(
+                      x = c(
+                        "News Mentions",
+                        "Blog Mentions",
+                        "References"
+                      ),
+                      y = c(
+                        as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]])),
+                        as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]])),
+                        as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["references"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["references"]]))
+                      ),
+                      type = "bar"
+                    )
+                  )
+                )
+              )
+            }
+
+            material_card(
+              title = paste("Análisis de", clean_text(row$Titulo), sep = " "),
+              tags$div(
+                class = "container",
+                tags$div(
+                  class = "masonry row",
+                  style = "position: relative;",
+                  material_row(
+                    material_column(
+                      width = 4,
+                      material_card(
+                        title = "Número de citaciones",
+                        depth = 5,
+                        tags$p(paste(
+                          "Número de percentil: ",
+                          gsub("th", "º", metrics[["scopus_metrics"]][["percentile"]]),
+                          sep = " "
+                        )),
+                        tags$div(style = "text-align: center;", tags$h3(metrics[["scopus_metrics"]][["citations_in_scopus"]]))
+                      )
+                    ),
+                    material_column(
+                      width = 4,
+                      material_card(
+                        title = "Número de visitas",
+                        depth = 5,
+                        tags$p(
+                          gsub("Views count", "Desde", metrics[["views_count"]][["years"]])
+                        ),
+                        tags$div(style = "text-align: center;", tags$h3(metrics[["views_count"]][["total_views"]]))
+                      )
+                    ),
+                    material_column(
+                      width = 4,
+                      material_card(
+                        title = "Índice Feild Weight Citation Impact (FWCI)",
+                        depth = 5,
+                        tags$div(style = "text-align: center;", tags$h3(metrics[["scopus_metrics"]][["field_weighted_citation_impact"]]))
+                      )
+                    )
+                  ),
+                  material_row(conditional_cards)
+                )
               )
             )
-          )
-        })
-
+          })
+        }
       }
     } else {
-      metrics <- bibliometrics::getMetricsSource(row$BD, row$ID)
+      metrics <- bibliometrics::getMetricsSource(row$BD, row$ID, row$Titulo)
 
       runjs("$('#loader').fadeOut();")
       runjs("$('#liTab2').show();")
@@ -738,7 +713,7 @@ server <- function(input, output, session) {
                 width = 6,
                 material_card(
                   style = "height: 220px;",
-                  title = "SNIP",
+                  title = "SJR",
                   depth = 5,
                   tags$p(paste("Año:  ", metrics[[3]][["year"]][2])),
                   tags$div(style = "text-align: center;", tags$h3(metrics[[3]][["total"]][2]))
@@ -760,10 +735,16 @@ server <- function(input, output, session) {
                   material_column(
                     width = 8,
                     material_card(
-                      style = "height: 220px;",
+                      style = "height: 220px; text-align: center;",
                       title = "Editorial",
                       depth = 5,
-                      tags$div(style = "text-align: center;", tags$h3(metrics[[1]][["Editorial"]]))
+                      tags$div(
+                        tags$h3(
+                        ifelse(is.na(metrics[[1]][["Editorial"]]),
+                          "No aparece en base de datos",
+                          metrics[[1]][["Editorial"]])
+                        )
+                      )
                     )
                   ),
                   material_column(
