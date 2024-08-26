@@ -19,7 +19,7 @@ getMetrics <- function(uid) {
 
   source_python("R/py/WebScrappingGoogle.py")
 
-  metrics <-getAuthors(uid)
+  metrics <-getMetrics(uid)
 
   dfMetrics <- py_to_r(metrics)
 

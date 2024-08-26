@@ -19,7 +19,7 @@ def safe_find_element(driver, by, value):
     try:
         return driver.find_element(by, value).text
     except:
-        return 0
+        return None
 
 
 
@@ -34,12 +34,12 @@ def getMetrics(eid, user, password):
     input = driver.find_element(By.XPATH, '//*[@id="bdd-email"]')
     input.send_keys(user+"@red.ujaen.es")
 
-    time.sleep(2)
+    time.sleep(1)
 
     button = driver.find_element(By.XPATH, '//button[@id="bdd-els-searchBtn"]')
     button.click()
 
-    time.sleep(2)
+    time.sleep(1)
 
     button = driver.find_element(By.XPATH, '//*[@id="bdd-elsPrimaryBtn3"]')
     button.click()
@@ -48,8 +48,8 @@ def getMetrics(eid, user, password):
     
     element = driver.find_element(By.XPATH, "//div[contains(text(), 'SIDUJA Servicio de Identidad - Universidad de Jaén')]")
     element.click()
+    
     time.sleep(2)
-
 
     input = driver.find_element(By.XPATH, '//*[@id="username"]')
     input.send_keys(user)
@@ -75,43 +75,59 @@ def getMetrics(eid, user, password):
   
       data = {}
       
-      
-      data['scopus_metrics'] = [
-        ['citations', 'percentile','field_weighted_citation_impact'],
-        [safe_find_element(driver, By.XPATH, '//*[@data-testid="unclickable-count"]'),
-        safe_find_element(driver, By.XPATH, '//*[@class="info-field-module__DPYRH"]'),
-        safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[1]/div[1]/div[2]/div/div/div/div/div[1]/a/span/span')
-        ]
-      ]
+      data['scopus_metrics'] = {
+          'citations_in_scopus': safe_find_element(driver, By.XPATH, '//*[@data-testid="unclickable-count"]'),
+          'percentile': safe_find_element(driver, By.XPATH, '//*[@class="info-field-module__DPYRH"]'),
+          'field_weighted_citation_impact': safe_find_element(driver, By.XPATH, '//*[@data-testid="clickable-count"]')
+      }
   
-      data['views_count'] = [ ['total_views', 'years'],
-          [
-            safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[1]/div[2]/div[2]/div/div/div/div/div/div[1]/span'),
-            safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[1]/div[2]/div[2]/div/div/div/div/div/div[2]/span/span')
-          ]
-      ]
+      data['views_count'] = {
+          'total_views': safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[1]/div[2]/div[2]/div/div/div/div/div/div[1]/span'),
+          'years': safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[1]/div[2]/div[2]/div/div/div/div/div/div[2]/span/span')
+      }
   
-      data['plumx_metrics'] = [
-        ['readers', 'news_mentions', 'blog_mentions','references','Shares, Likes & Comments'],
-        [
-          safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[2]/div/div/div/div/div/div/div[1]/span'),
-          safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[3]/div/div[1]/div/div/div/div/div[1]/span'),
-          safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[3]/div/div[2]/div/div/div/div/div[1]/span'),
-          safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[3]/div/div[3]/div/div/div/div/div[1]/span'),
-          safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[5]/div/div/div/div/div/div/div[1]/span')
-        ]
-      ]
-
+      data['plumx_metrics'] = {
+          'captures': {
+              'readers': safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[2]/div/div/div/div/div/div/div[1]/span')
+          },
+          'mentions': {
+              'news_mentions': safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[3]/div/div[1]/div/div/div/div/div[1]/span'),
+              'blog_mentions': safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[3]/div/div[2]/div/div/div/div/div[1]/span'),
+              'references': safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[3]/div/div[3]/div/div/div/div/div[1]/span')
+          },
+          'social': {
+              'Shares, Likes & Comments': safe_find_element(driver, By.XPATH, '//*[@id="metrics"]/div/section[2]/div[5]/div/div/div/div/div/div/div[1]/span')
+          }
+      }
 
     except:
         data = {}
         
-        data['scopus_metrics'] = [['citations', 'percentile','field_weighted_citation_impact'],
-        [0,0,0]]
-  
-        data['views_count'] =[ ['total_views', 'years'],[0,0]]
-  
-        data['plumx_metrics'] = [['readers', 'news_mentions', 'blog_mentions','references','Shares, Likes & Comments'],
-        [0,0,0,0,0]]
+        data['scopus_metrics'] = {
+            'citations_in_scopus': None,
+            'percentile': None,
+            'field_weighted_citation_impact': None
+        }
+
+        data['views_count'] = {
+            'total_views': None,
+            'years': None
+        }
+
+        data['plumx_metrics'] = {
+            'captures': {
+                'readers': None
+            },
+            'mentions': {
+                'news_mentions': None,
+                'blog_mentions': None,
+      
+                'references': None
+            },
+            'social': {
+                'Shares, Likes & Comments': None
+            }
+        }
+
     return data
 

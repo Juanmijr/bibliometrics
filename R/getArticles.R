@@ -21,7 +21,6 @@ getArticle <- function (apis, query){
   response<- data.frame()
   first<- TRUE
   for (ap in selected){
-    print(ap)
     apiSelect <- apiConfig[apiConfig$name == ap,]
 
     if (ap == "wos") {
@@ -48,9 +47,8 @@ getArticle <- function (apis, query){
 
 
 getArticleScopus<-function(query, apiSelect){
-  print (apiSelect$urlArticle)
+  df=NA
   textQuery=paste0("TITLE-ABS-KEY(",query,")")
-  print(textQuery)
 
   headers <- add_headers(
     "X-ELS-APIKey" = apiSelect$key,
@@ -63,21 +61,28 @@ getArticleScopus<-function(query, apiSelect){
   result <- fromJSON(content, flatten = TRUE)
 
 
+  if (is.null(result[["search-results"]][["entry"]][["error"]])){
+
   df<- data.frame(
     "ID" = result$'search-results'$entry$`eid`,
     "Titulo" = result$'search-results'$entry$`dc:title`,
     'Palabras clave' = NA,
     'Autor' = result$'search-results'$entry$`dc:creator`,
-    'Año' = result$'search-results'$entry$`prism:coverDate`,
+    'Año' = format(as.Date(result$'search-results'$entry$`prism:coverDate`),"%Y"),
     'Source' = NA,
     'DOI' = result$'search-results'$entry$`prism:doi`,
-    "Citas" = result$'search-results'$entry$`citedby-count`,
+    "Citas" = as.numeric(result$'search-results'$entry$`citedby-count`),
     'Summary' = NA,
-    'BBDD'= 'scopus',
+    'BD'= 'scopus',
     stringsAsFactors = FALSE
   )
 
-
+  }
+  else{
+    df<- data.frame(
+      'error'= TRUE
+    )
+  }
   return(df)
 
 

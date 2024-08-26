@@ -75,6 +75,9 @@ def getMetricsAuthor(id):
             'Desde 2019': since_2019
         }
     driver.quit()
+    
+    print(table_data)
+    
     return pd.DataFrame(table_data)
 
 

@@ -1,16 +1,22 @@
 library(httr)
 library(jsonlite)
 
+#' Obtener métricas de autor
+#'
+#' @param apis
+#' @param query
+#'
+#' @return
+#' @export
+#'
+#' @examples
 getMetricsAuthor<- function (apis, query){
-  apiConfig<- fromJSON("R/APIConfig.JSON")
-  apiSelect <- apiConfig[apiConfig$name == apis,]
 
-  View(apiSelect)
 
     if (apis == "scholar") {
-    result <- getMetricsAuthorScholar(query, apiSelect)
+    result <- getMetricsAuthorScholar(query)
   } else if (apis == "scopus") {
-    result <- getMetricsAuthorScopus(query, apiSelect)
+    result <-getMetricsAuthorScopus(query, apis)
   } else {
     stop("Valor de 'ap' no válido")
   }

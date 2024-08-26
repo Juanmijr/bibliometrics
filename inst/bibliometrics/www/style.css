@@ -482,3 +482,27 @@ nav.brand-logo{
     transform: rotate(360deg);
   }
 }
+
+.errorResultados{
+  text-align: center;
+}
+
+.error-message {
+    background-color: #f8d7da; /* Color de fondo claro para errores */
+    color: #721c24; /* Color de texto oscuro para contraste */
+    border: 1px solid #f5c6cb; /* Borde con color de fondo más oscuro */
+    border-radius: 0.25rem; /* Bordes redondeados */
+    padding: 1rem; /* Espaciado interno */
+    margin: 1rem 0; /* Espaciado externo */
+    font-family: Arial, sans-serif; /* Fuente limpia */
+    font-size: 1rem; /* Tamaño de fuente adecuado */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra sutil para darle profundidad */
+    text-align: center; /* Centramos el texto */
+}
+
+.error-message strong {
+    display: block; /* Hacer que el texto fuerte se muestre en una línea separada */
+    margin-bottom: 0.5rem; /* Espacio debajo del texto fuerte */
+    font-size: 1.2rem; /* Tamaño de fuente un poco más grande para el texto fuerte */
+    font-weight: bold;
+}

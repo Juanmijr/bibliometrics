@@ -75,7 +75,7 @@ def getMetrics(id):
             'Total': total,
             'Desde 2019': since_2019
         }
+    print(table_data)
     driver.quit()
-    return table_data
-
+    return pd.DataFrame(table_data)
 

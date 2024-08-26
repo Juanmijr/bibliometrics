@@ -1,0 +1,17 @@
+---
+title: "Dataframe Report"
+params:
+  df: NULL
+output:
+  pdf_document:
+    latex_engine: xelatex
+    extra_dependencies: ["lscape"]
+geometry: landscape
+---
+
+
+```{r, echo=FALSE}
+
+
+
+pander::pandoc.table(params$df)

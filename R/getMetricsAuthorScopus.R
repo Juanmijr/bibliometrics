@@ -1,7 +1,17 @@
 library(httr)
 library(jsonlite)
 
-getMetricsAuthor<- function(query, apis){
+
+#' Obtener métricas de Autores de Scopus
+#'
+#' @param uid id de Scopus
+#'
+#' @return dataframe de datos métricos
+#' @export
+#'
+#' @examples
+#'getMetricsAuthorScopus("9-s2.0-40661023100","scopus")
+getMetricsAuthorScopus<- function(query, apis){
 
   apiConfig<- fromJSON("R/APIConfig.JSON")
   apiSelect <- apiConfig[apiConfig$name == apis,]
@@ -18,6 +28,8 @@ getMetricsAuthor<- function(query, apis){
   content<- content(response, "text")
   result <- fromJSON(content, flatten = TRUE)
 
+  View(result)
+
 
   df<- data.frame(
     "Orcid" = result[["author-retrieval-response"]][["coredata.orcid"]],
@@ -31,8 +43,6 @@ getMetricsAuthor<- function(query, apis){
     'lugarAfiliacion' = paste(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.city"]],result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.state"]],result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.country"]],sep=", "),
     stringsAsFactors = FALSE
   )
-
-
 
 
   return(df)

@@ -4,6 +4,8 @@
     "name":"scopus",
     "urlArticle": "https://api.elsevier.com/content/search/scopus",
     "urlAuthor":"https://api.elsevier.com/content/search/author",
+    "urlMetricsAuthor":"https://api.elsevier.com/content/author",
+    "urlSource":"https://api.elsevier.com/content/serial/title",
     "key": "6ae1bd621325c5196a84ed25c171631f",
     "instant": "62b8aed831987c34f990346189871fa4"
 

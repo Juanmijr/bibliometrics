@@ -57,20 +57,17 @@ def getMetrics(query):
 
     time.sleep(5)
 
-    driver.get("https://www.webofscience.com/wos/alldb/full-record/"+query)
-   
-    button1 = wait.until(EC.presence_of_element_located((By.XPATH, '(//button[descendant::span[@class="font-size-26" and text()="3.3"]])[1]')))
-    button1.click()
+    driver.get("https://www.webofscience.com/wos/author/search")
+               
+    
+    element = wait.until(EC.element_to_be_clickable(By.XPATH, '//*[@id="lastNameAutoId"]'))
+    element.send_keys("PRUEBA")
 
 
-    close = wait.until(EC.element_to_be_clickable((By.XPATH,'//*[@id="snJournalData"]/span/div[2]/div[1]/div[1]/app-jcr-sidenav/mat-sidenav-container/mat-sidenav/div/div[2]/div[1]/button')))
-    close.click()
+    boton = wait.until(EC.element_to_be_clickable(By.XPATH,'/html/body/app-wos/main/div/div/div[2]/div/div/div[2]/app-input-route/app-input-route/app-search-home/div[2]/div/app-author-search/div/div[2]/app-author-name-search-form/div[2]/div/button[2]'))
+    boton.click()
 
-    button2 = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[data-ta="jcrSidenav-3-jcr-citation-indicator"]')))
-    button2.click()
-
-    time.sleep(3)
-
+    time.sleep(4)
 
 
 getMetrics("WOS:001008886600001")
