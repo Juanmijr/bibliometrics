@@ -506,3 +506,9 @@ nav.brand-logo{
     font-size: 1.2rem; /* Tamaño de fuente un poco más grande para el texto fuerte */
     font-weight: bold;
 }
+
+.descripcion {
+  margin: 5 px;
+  font-size: 20px;
+
+}

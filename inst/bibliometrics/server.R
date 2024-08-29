@@ -371,24 +371,39 @@ server <- function(input, output, session) {
 
 
   output$downloadXLSX <- downloadHandler(
+
+
+
+
+
     filename = function() {
       "data.xlsx"
     },
     content = function(file) {
-      write_xlsx(df(), path = file)
+      filtered_without <- filtered_data()
+      filtered_without <- filtered_without[, colSums(is.na(filtered_without)) != nrow(filtered_without)]
+      filtered_without <- filtered_without[, !names(filtered_without) %in% "Botón"]
+      write_xlsx(filtered_without, path = file)
     }
   )
 
 
   output$downloadPDF <- downloadHandler(
+
+
+
     filename = function() {
       "data.pdf"
     },
     content = function(file) {
+      filtered_without <- filtered_data()
+      filtered_without <- filtered_without[, colSums(is.na(filtered_without)) != nrow(filtered_without)]
+      filtered_without <- filtered_without[, !names(filtered_without) %in% "Botón"]
+
       tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("template.Rmd", tempReport, overwrite = TRUE)
 
-      params <- list(df = df())
+      params <- list(df = filtered_without)
 
       rmarkdown::render(
         tempReport,
