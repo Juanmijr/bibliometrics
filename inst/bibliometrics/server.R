@@ -33,7 +33,7 @@ server <- function(input, output, session) {
     if (selected_option == "article") {
       runjs(
         '$("#selectApi option[value=\'scholar\']").attr("disabled", "disabled");
-      $("#selectApi option[value=\'wos\']").removeAttr("disabled");
+      $("#selectApi option[value=\'wos\']").attr("disabled","disabled");
                $("#selectApi").formSelect(); '
       )
     } else if (selected_option == "author") {
