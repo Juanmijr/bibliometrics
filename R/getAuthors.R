@@ -1,6 +1,7 @@
 library(jsonlite)
 library(reticulate)
 library(httr)
+library(stringi)
 
 
 #' Método para obtener los autores que coincidan con una consulta de texto
@@ -51,7 +52,7 @@ getAuthor <- function (apis, query){
 #'
 #' @return Este método, tras los parámetros facilitados, genera un objeto data.frame con los datos en los que coincide con la consulta obtenida por Google Scholar, que posteriormente será devuelto.
 #' @export
-#' @import reticulate
+#' @import reticulate, stringi
 #' @examples
 #' getAuthorsGoogle("Charte")
 #' getAuthorsGoogle("Jiménez")
@@ -63,7 +64,15 @@ getAuthorsGoogle<-function(query){
 
   use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
-  querySin <- gsub(" ", "", query)
+  query <- tolower(query)
+
+  query <- gsub(" ", "-", query)
+
+  query <- stri_trans_general(query, "Latin-ASCII")
+
+  query <- gsub("[^a-zA-Z0-9-]", "", query)
+
+
 
   if (!py_module_available("selenium")) {
     py_install("selenium")
@@ -75,7 +84,7 @@ getAuthorsGoogle<-function(query){
 
   source_python("R/py/WebScrappingGoogle.py")
 
-  authorsPY <-getAuthors(querySin)
+  authorsPY <-getAuthors(query)
 
   authors <- py_to_r(authorsPY)
 

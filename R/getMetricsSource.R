@@ -73,8 +73,6 @@ getMetricsSourceScopus <- function(query, api, titleSource=NULL) {
   result <- fromJSON(content, flatten = TRUE)
 
 
-  View(result)
-
   entry <- result[["serial-metadata-response"]][["entry"]]
 
 

@@ -2,10 +2,22 @@
 % Please edit documentation in R/runGUI.R
 \name{runGUI}
 \alias{runGUI}
-\title{Lanza la aplicación de BiblioMetrics}
+\title{Método para lanzar interfaz gráfica de BiblioMetric}
 \usage{
 runGUI()
 }
+\value{
+nada
+}
 \description{
-Lanza la aplicación de BiblioMetrics
+obtención de datos bibliométricos usando intefaz de usuario interactiva
+}
+\details{
+El paquete \pkg{dataesgobr} contiene una interfaz gráfica que puedes utilizar para hacer más fácil su utilidad.
+}
+\examples{
+\dontrun{
+library(dataesgobr)
+runGUI()
+}
 }

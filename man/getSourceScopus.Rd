@@ -17,3 +17,7 @@ Este método, tras los parámetros facilitados, genera un objeto data.frame con 
 \description{
 Método para obtener la información de revistas de la base de datos de Scopus
 }
+\examples{
+getSourceScopus("scopus","elsevier")
+getSourceScopus("scopus","neurocomputing")
+}

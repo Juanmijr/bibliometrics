@@ -3,7 +3,7 @@
 #' @param libname
 #' @param pkgname
 #'
-#' @return
+#' @return nada
 #' @export
 #'
 #' @examples

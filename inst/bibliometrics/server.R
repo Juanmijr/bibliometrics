@@ -243,7 +243,7 @@ server <- function(input, output, session) {
               });
             ")
             )
-          }, width = "100%", server = FALSE)
+          })
 
           runjs("$('#cardFilter').show(); $('#resultados').show(); $('#instrucciones').hide(); $('#errorResultados').hide();")
         } else {
@@ -345,7 +345,7 @@ server <- function(input, output, session) {
             });
         ")
       )
-    }, width = "100%", server = FALSE)
+    })
 
 
 

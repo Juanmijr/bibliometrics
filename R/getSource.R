@@ -49,9 +49,8 @@ getSource<- function (apis, query){
 #' @return Este método, tras los parámetros facilitados, genera un objeto data.frame con los datos en los que coincide con la consulta obtenida por Scopus, que posteriormente será devuelto.
 #' @export
 #' @import httr, jsonlite
-#'
 #' @examples
-#' getSourceScopus("scopus",elsevier")
+#' getSourceScopus("scopus","elsevier")
 #' getSourceScopus("scopus","neurocomputing")
 getSourceScopus<-function(query, apiSelect){
   df=NA

@@ -1,13 +1,13 @@
 Package: bibliometrics
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Análisis de datos bibliométricos
+Version: 1.0.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Juan Miguel", "Jiménez Rivas", "jmjr0007@red.ujaen.es", role = c("aut", "cre"),
+    person("Francisco", "Charte Ojeda", "fcharte@ujaen.es", role=c("cre"))
+Description: Interfaz gráfica para analizar datos bibliométricos de artículos, autores y revistas de las mejores bases de datos científicas.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
-Imports: tinytex, shiny, shinymaterial, rnaturalearth, DT, shinyjs, plotly, stringr, plotly, xml2, rmarkdown, knitr, writexl, httr, jsonlite, reticulate
+Imports: tinytex, shiny, shinymaterial, DT, shinyjs, plotly, stringr, xml2, rmarkdown, knitr, writexl, httr, jsonlite, reticulate, stringi
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

@@ -1,12 +1,10 @@
 library(shiny)
 library(shinymaterial)
-library(rnaturalearth)
 library(DT)
 library(shinyjs)
 library(plotly)
 
-paisesSin <- ne_countries()
-paises <- paisesSin$name
+
 
 
 ui <- material_page(

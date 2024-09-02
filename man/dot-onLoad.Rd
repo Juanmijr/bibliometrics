@@ -9,6 +9,9 @@
 \arguments{
 \item{pkgname}{}
 }
+\value{
+nada
+}
 \description{
 Instalación por defecto de TinyTeX
 }
