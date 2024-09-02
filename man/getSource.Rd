@@ -2,23 +2,22 @@
 % Please edit documentation in R/getSource.R
 \name{getSource}
 \alias{getSource}
-\title{función para obtener información de fuentes}
+\title{Método para obtener la información de todas las revistas}
 \usage{
 getSource(apis, query)
 }
 \arguments{
-\item{apis}{lista de apis diciendo con los valores de apis = true o false}
+\item{apis}{Vector de las diferentes bases de datos, asignándole TRUE o FALSE, según si la base de datos que queramos buscar.}
 
-\item{query}{texto que queremos buscar
-TENGO QUE ESCRIBIR ESTO}
+\item{query}{Elemento de texto, por el cual consultaremos en las bases de datos que son elegidas en apis.}
 }
 \value{
-devuelve dataframe de la información de las fuentes de las apis a buscar
+Este método, devuelve un dataframe de las revistas que se obtienen de las diferentes bases de datos bibliométricas.
 }
 \description{
-función para obtener información de fuentes
+Método para obtener la información de todas las revistas
 }
 \examples{
-getSource(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"springer")
-getSource(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"charte")
+getSource(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"elsevier")
+getSource(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"neurocomputing")
 }

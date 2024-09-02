@@ -4,7 +4,6 @@ library(stringr)
 library(shiny)
 library(bibliometrics)
 library(plotly)
-library(stringr)
 library(xml2)
 library(rmarkdown)
 library(knitr)
@@ -127,7 +126,9 @@ server <- function(input, output, session) {
 
 
 
-  observeEvent(input$search_button, {
+  observeEvent(input$buttonSearch, {
+
+
     search_query <- input$searchText
     selected_option <- input$select_search
     selected_api <- input$selectApi
@@ -138,7 +139,6 @@ server <- function(input, output, session) {
 
       runjs("$('#loader').fadeIn();")
 
-      print(selected_option)
 
       df_switch <- switch(selected_option,
                           "article" = bibliometrics::getArticle(selected_api, search_query),
@@ -147,7 +147,7 @@ server <- function(input, output, session) {
       )
 
 
-
+      df_switch <-  df_switch[, colSums(is.na(df_switch)) != nrow(df_switch)]
 
       df(df_switch)
       busqueda(selected_option)
@@ -194,7 +194,6 @@ server <- function(input, output, session) {
           if ('Citas' %in% names(filtered_data) && !all(is.na(filtered_data$Citas))) {
             min_cites <- min(filtered_data$Citas, na.rm = TRUE)
             max_cites <- max(filtered_data$Citas, na.rm = TRUE)
-            print(paste("ENTRO ",min_cites, max_cites))
             output$citationNum <- renderUI({
               create_slider_ui("sliderCitesNum", "Número de citas:", min_cites, max_cites)
             })

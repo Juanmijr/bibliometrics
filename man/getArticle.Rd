@@ -2,23 +2,22 @@
 % Please edit documentation in R/getArticles.R
 \name{getArticle}
 \alias{getArticle}
-\title{función para obtener articulos}
+\title{Método para obtener los artículos en cualquier base de datos posible, mediante una consulta}
 \usage{
 getArticle(apis, query)
 }
 \arguments{
-\item{apis}{lista de apis diciendo con los valores de apis = true o false}
+\item{apis}{Vector de las diferentes bases de datos, asignándole TRUE o FALSE, según la base de datos que queramos buscar.}
 
-\item{query}{texto que queremos buscar
-TENGO QUE ESCRIBIR ESTO}
+\item{query}{Elemento de texto, por el cual consultaremos en las bases de datos que son elegidas en apis.}
 }
 \value{
-devuelve dataframe de los artículos de las apis a buscar
+Este método, devuelve un dataframe de los artículos de que se obtienen de las diferentes bases de datos bibliométricas.
 }
 \description{
-función para obtener articulos
+Método para obtener los artículos en cualquier base de datos posible, mediante una consulta
 }
 \examples{
-getArticle(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"springer")
-getArticle(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"charte")
+getArticle(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"tutorial autoencoder")
+getArticle(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"Strategies for time series forecasting with generalized regression neural networks")
 }

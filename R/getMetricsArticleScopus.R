@@ -3,11 +3,11 @@ library(reticulate)
 
 
 
-#' Obtener Métricas de Scopus mediante web scrapping
+#' Método para obtener métricas de Scopus de un artículo mediante web scrapping
 #'
-#' @param uid del artículo
+#' @param uid Número de serie UID del artículo
 #'
-#' @return diccionario con métricas
+#' @return Este método, tras pasar el UID del artículo y haber introducido en el archivo .Renviron, genera un objeto data.frame con las métricas del artículo con dicho UID en Scopus, que posteriormente será devuelto.
 #' @export
 #' @examples
 #' getMetricsScopus("2-s2.0-85187374370")

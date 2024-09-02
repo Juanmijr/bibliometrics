@@ -2,13 +2,22 @@
 % Please edit documentation in R/getMetricsAuthor.R
 \name{getMetricsAuthor}
 \alias{getMetricsAuthor}
-\title{Obtener métricas de autor}
+\title{Método para obtener métricas de un autor de las diferentes bases de datos bibliométricas.}
 \usage{
-getMetricsAuthor(apis, query)
+getMetricsAuthor(apis, ID)
 }
 \arguments{
-\item{query}{}
+\item{apis}{La variable apis será el nombre en texto que tenemos asociado a cada base de datos bibliométrica}
+
+\item{ID}{Variable de texto que tendremos asociado el ID del autor, para buscarlo.}
+}
+\value{
+Este método devuelve un dataframe en el cual estará los datos métricos del autor solicitado por el ID de la base de datos escogida.
 }
 \description{
-Obtener métricas de autor
+Método para obtener métricas de un autor de las diferentes bases de datos bibliométricas.
+}
+\examples{
+getMetricsAuthor("scholar","i8l_80EAAAAJ")
+getMetricsAuthor("scopus","9-s2.0-40661023100")
 }

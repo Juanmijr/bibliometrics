@@ -112,13 +112,23 @@ ui <- material_page(
                 )
               )
             ),
-            material_button(
-              input_id = "search_button",
-              icon = "search",
-              depth = 5,
-              label = "Buscar"
-            )
-          )
+
+            tags$button(
+              class="waves-light btn shiny-material-button z-depth-5 shiny-bound-input",
+              id="buttonSearch",
+              value="3",
+              tags$i(
+                class="material-icons left",
+                "search"
+              ),
+              "Buscar"
+            ),
+            tags$script(HTML("
+    $(document).on('click', '#buttonSearch', function() {
+      Shiny.setInputValue('buttonSearch', Math.random());
+    });
+  "))
+          ),
         ),
         tags$div(
           class = "card z-depth-4",
@@ -174,5 +184,7 @@ ui <- material_page(
     )
 
   ),
-  material_tab_content(tab_id = "cardAnalisis", uiOutput("analisis"))
+  material_tab_content(tab_id = "cardAnalisis", uiOutput("analisis")),
+
+
 )

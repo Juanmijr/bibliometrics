@@ -2,21 +2,24 @@
 % Please edit documentation in R/getMetricsSource.R
 \name{getMetricsSource}
 \alias{getMetricsSource}
-\title{Obtener métricas de fuentes de Scopus}
+\title{Método para obtener métricas de una revista de las diferentes bases de datos bibliométricas.}
 \usage{
-getMetricsSource(apis, query)
+getMetricsSource(apis, query, title)
 }
 \arguments{
-\item{apis}{BBDD scopus}
+\item{apis}{Nombre de la base de datos a buscar}
 
-\item{query}{consulta}
+\item{query}{En este caso será la consulta será el ISSN de la revista.}
+
+\item{title}{En caso de que no se inserte la ISSN, se podrá buscar por el nombre de la revista.}
 }
 \value{
-dataframe de datos métricos
+Este método, devuelve una lista de dataframes de las métricas que se pueden obtener de una revista de las diferentes bases de datos bibliométricas.
 }
 \description{
-Obtener métricas de fuentes de Scopus
+Método para obtener métricas de una revista de las diferentes bases de datos bibliométricas.
 }
 \examples{
-getMetricsSource("scopus","9-s2.0-40661023100")
+getMetricsSource("scopus","1874-9305", NA)
+getMetricsSource("scopus",NA, "Elsevier Astrodynamics Series")
 }

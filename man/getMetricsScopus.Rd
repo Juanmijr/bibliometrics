@@ -2,18 +2,18 @@
 % Please edit documentation in R/getMetricsArticleScopus.R
 \name{getMetricsScopus}
 \alias{getMetricsScopus}
-\title{Obtener Métricas de Scopus mediante web scrapping}
+\title{Método para obtener métricas de Scopus de un artículo mediante web scrapping}
 \usage{
 getMetricsScopus(uid)
 }
 \arguments{
-\item{uid}{del artículo}
+\item{uid}{Número de serie UID del artículo}
 }
 \value{
-diccionario con métricas
+Este método, tras pasar el UID del artículo y haber introducido en el archivo .Renviron, genera un objeto data.frame con las métricas del artículo con dicho UID en Scopus, que posteriormente será devuelto.
 }
 \description{
-Obtener Métricas de Scopus mediante web scrapping
+Método para obtener métricas de Scopus de un artículo mediante web scrapping
 }
 \examples{
 getMetricsScopus("2-s2.0-85187374370")
