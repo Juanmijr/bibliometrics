@@ -9,9 +9,29 @@ output:
 geometry: landscape
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+library(dplyr)
 
-```{r, echo=FALSE}
 
 
 
-pander::pandoc.table(params$df)
+ajustarAnchoColumnas <- function(df, anchoTotal = 6.5) {
+  numColumnas <- ncol(df)
+  anchoXColumna <- paste0(anchoTotal / numColumnas, "in")  # Calcula el ancho por columna en pulgadas
+
+  # Crea la tabla con el ancho calculado para cada columna
+  tabla <- kable(df, "latex", booktabs = TRUE) %>%
+    kable_styling(latex_options = c("hold_position", "scale_down"))
+  
+  # Aplica el ancho a cada columna
+  for (i in 1:numColumnas) {
+    tabla <- tabla %>% column_spec(i, width = anchoXColumna)
+  }
+  
+  return(tabla)
+}
+
+# Renderizar la tabla ajustando todas las columnas
+ajustar_ancho_todas_columnas(params$df(), ancho_total = 6.5)

@@ -1,7 +1,4 @@
 
-library(httr)
-library(jsonlite)
-
 #' Método para obtener los artículos en cualquier base de datos posible, mediante una consulta
 #'
 #' @param apis Vector de las diferentes bases de datos, asignándole TRUE o FALSE, según la base de datos que queramos buscar.
@@ -70,9 +67,9 @@ getArticle <- function (apis, query){
 #'
 getArticlesGoogle<- function(query, apiSelect){
 
-  response<- GET(url=apiSelect$url, query=list("api_key"= apiSelect$key, "q" = query, "hl"= "es"))
+  response<- httr::GET(url=apiSelect$url, query=list("api_key"= apiSelect$key, "q" = query, "hl"= "es"))
   content<- content(response, "text")
-  result <- fromJSON(content)
+  result <- jsonlite::fromJSON(content)
 
 
   df<- data.frame(
@@ -135,9 +132,9 @@ getArticlesScopus<-function(query, apiSelect){
     "Accept" = "application/json"
   )
 
-  response<- GET(url= apiSelect$urlArticle ,headers, query=list( "query"=textQuery, "count"="25"))
+  response<- httr::GET(url= apiSelect$urlArticle ,headers, query=list( "query"=textQuery, "count"="25"))
   content<- content(response, "text")
-  result <- fromJSON(content, flatten = TRUE)
+  result <- jsonlite::fromJSON(content, flatten = TRUE)
 
 
   if (is.null(result[["search-results"]][["entry"]][["error"]])){
