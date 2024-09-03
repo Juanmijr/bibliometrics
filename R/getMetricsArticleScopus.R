@@ -1,5 +1,3 @@
-library(jsonlite)
-library(reticulate)
 
 
 
@@ -15,27 +13,27 @@ getMetricsScopus <- function(uid) {
 
   readRenviron(".Renviron")
 
-  python_config <- py_discover_config()
+  reticulate::python_config <- py_discover_config()
 
-  use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
+  reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
 
 
   if (!py_module_available("selenium")) {
-    py_install("selenium")
+    reticulate::py_install("selenium")
   }
 
   if (!py_module_available("pandas")) {
-    py_install("pandas")
+    reticulate::py_install("pandas")
   }
 
-  source_python("R/py/WebScrappingScopus.py")
+  reticulate::source_python("R/py/WebScrappingScopus.py")
 
 
 
   metrics <-getMetrics(uid, Sys.getenv("USER"), Sys.getenv("PASSWORD"))
 
-  dfMetrics <- py_to_r(metrics)
+  dfMetrics <- reticulate::py_to_r(metrics)
 
   return(dfMetrics)
 }

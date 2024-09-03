@@ -1,7 +1,3 @@
-library(jsonlite)
-library(reticulate)
-library(httr)
-library(stringi)
 
 
 #' Método para obtener los autores que coincidan con una consulta de texto
@@ -15,7 +11,7 @@ library(stringi)
 #' getAuthor(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"Charte")
 #' getArticle(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"Jiménez")
 getAuthor <- function (apis, query){
-  apiConfig<- fromJSON("R/APIConfig.JSON")
+  apiConfig<- jsonlite::fromJSON("R/APIConfig.JSON")
 
 
   selected <- names(apis)[apis]
@@ -25,9 +21,9 @@ getAuthor <- function (apis, query){
     apiSelect <- apiConfig[apiConfig$name == ap,]
 
    if (ap == "scholar") {
-      result <- getAuthorsGoogle(query)
+      result <- bibliometrics::getAuthorsGoogle(query)
     } else if (ap == "scopus") {
-      result <- getAuthorsScopus(query, apiSelect)
+      result <- bibliometrics::getAuthorsScopus(query, apiSelect)
     } else {
       stop("Valor de 'ap' no válido")
     }
@@ -60,33 +56,34 @@ getAuthor <- function (apis, query){
 getAuthorsGoogle<-function(query){
 
 
-  python_config <- py_discover_config()
+  python_config <- reticulate::py_discover_config()
 
-  use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
+  reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
   query <- tolower(query)
 
   query <- gsub(" ", "-", query)
 
-  query <- stri_trans_general(query, "Latin-ASCII")
+  query <-stringi::stri_trans_general(query, "Latin-ASCII")
 
   query <- gsub("[^a-zA-Z0-9-]", "", query)
 
 
 
   if (!py_module_available("selenium")) {
-    py_install("selenium")
+    reticulate::py_install("selenium")
   }
 
   if (!py_module_available("pandas")) {
-    py_install("pandas")
+    reticulate::py_install("pandas")
   }
 
-  source_python("R/py/WebScrappingGoogle.py")
+  reticulate::source_python("R/py/WebScrappingGoogle.py")
 
   authorsPY <-getAuthors(query)
 
-  authors <- py_to_r(authorsPY)
+  authors <- reticulate::py_to_r(authorsPY)
+
 
 
   if (!"error" %in% colnames(authors)){
@@ -150,9 +147,9 @@ getAuthorsScopus<-function(query, apiSelect){
   )
 
 
-  response<- GET(url= apiSelect$urlAuthor,headers, query=list("query"=textQuery, "count"="25"))
-  content<- content(response, "text")
-  result <- fromJSON(content, flatten = TRUE)
+  response<- httr::GET(url= apiSelect$urlAuthor,headers, query=list("query"=textQuery, "count"="25"))
+  content<- httr::content(response, "text")
+  result <- jsonlite::fromJSON(content, flatten = TRUE)
 
 
   if (is.null(result[["search-results"]][["entry"]][["error"]])){

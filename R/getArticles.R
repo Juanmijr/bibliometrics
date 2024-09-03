@@ -10,7 +10,7 @@
 #' getArticle(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"tutorial autoencoder")
 #' getArticle(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"Strategies for time series forecasting with generalized regression neural networks")
 getArticle <- function (apis, query){
-  apiConfig<- fromJSON("R/APIConfig.JSON")
+  apiConfig<- jsonlite::fromJSON("R/APIConfig.JSON")
 
 
   selected <- names(apis)[apis]
@@ -68,7 +68,7 @@ getArticle <- function (apis, query){
 getArticlesGoogle<- function(query, apiSelect){
 
   response<- httr::GET(url=apiSelect$url, query=list("api_key"= apiSelect$key, "q" = query, "hl"= "es"))
-  content<- content(response, "text")
+  content<- httr::content(response, "text")
   result <- jsonlite::fromJSON(content)
 
 
@@ -133,7 +133,7 @@ getArticlesScopus<-function(query, apiSelect){
   )
 
   response<- httr::GET(url= apiSelect$urlArticle ,headers, query=list( "query"=textQuery, "count"="25"))
-  content<- content(response, "text")
+  content<- httr::content(response, "text")
   result <- jsonlite::fromJSON(content, flatten = TRUE)
 
 

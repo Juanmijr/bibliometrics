@@ -1,5 +1,3 @@
-library(httr)
-library(jsonlite)
 
 #' Método para obtener métricas de una revista de las diferentes bases de datos bibliométricas.
 #'
@@ -16,7 +14,6 @@ library(jsonlite)
 getMetricsSource<- function (apis, query, title){
 
    if (apis == "scopus") {
-     print("VOY A ENTRAR AQUÍ ")
     result <-getMetricsSourceScopus(query, apis, title)
   } else {
     stop(paste("Valor de 'api' no válido: ", apis))
@@ -41,7 +38,7 @@ getMetricsSource<- function (apis, query, title){
 #'getMetricsSource("1874-9305","scopus",NA)
 #'getMetricsSource(NA,"scopus","Elsevier Astrodynamics Series")
 getMetricsSourceScopus <- function(query, api, titleSource=NULL) {
-  apiConfig <- fromJSON("R/APIConfig.JSON")
+  apiConfig <- jsonlite::fromJSON("R/APIConfig.JSON")
   apiSelect <- apiConfig[apiConfig$name == api,]
 
   if(!is.null(query)){
@@ -53,7 +50,7 @@ getMetricsSourceScopus <- function(query, api, titleSource=NULL) {
       "Accept" = "application/json"
     )
 
-    response <- GET(url = urlISSN, headers, query = list(view = "enhanced"))
+    response <- httr::GET(url = urlISSN, headers, query = list(view = "enhanced"))
 
   }
   else{
@@ -63,14 +60,14 @@ getMetricsSourceScopus <- function(query, api, titleSource=NULL) {
       "X-ELS-Insttoken" = apiSelect$instant,
       "Accept" = "application/json"
     )
-    response <- GET(url = apiSelect$urlSource, headers, query = list(title=titleSource,view = "enhanced"))
+    response <- httr::GET(url = apiSelect$urlSource, headers, query = list(title=titleSource,view = "enhanced"))
 
   }
 
 
 
-  content <- content(response, "text")
-  result <- fromJSON(content, flatten = TRUE)
+  content <- httr::content(response, "text")
+  result <- jsonlite::fromJSON(content, flatten = TRUE)
 
 
   entry <- result[["serial-metadata-response"]][["entry"]]

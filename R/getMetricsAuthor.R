@@ -40,27 +40,26 @@ getMetricsAuthor<- function (apis, ID){
 #'getMetricsAuthorScholar("iwXvlSAAAAAJ")
 getMetricsAuthorScholar <- function(uid) {
 
-  python_config <- py_discover_config()
+  python_config <- reticulate::py_discover_config()
 
-  use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
+  reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
 
 
   if (!py_module_available("selenium")) {
-    py_install("selenium")
+    reticulate::py_install("selenium")
   }
 
   if (!py_module_available("pandas")) {
-    py_install("pandas")
+    reticulate::py_install("pandas")
   }
 
-  source_python("R/py/WebScrappingGoogle.py")
+  reticulate::source_python("R/py/WebScrappingGoogle.py")
 
   metrics <-getMetricsAuthor(uid)
 
-  dfMetrics <- py_to_r(metrics)
+  dfMetrics <- reticulate::py_to_r(metrics)
 
-  View(dfMetrics)
 
   return(dfMetrics)
 }
@@ -79,7 +78,7 @@ getMetricsAuthorScholar <- function(uid) {
 #'
 getMetricsAuthorScopus<- function(ID, apis){
 
-  apiConfig<- fromJSON("R/APIConfig.JSON")
+  apiConfig<- jsonlite::fromJSON("R/APIConfig.JSON")
   apiSelect <- apiConfig[apiConfig$name == apis,]
 
 
@@ -90,9 +89,9 @@ getMetricsAuthorScopus<- function(ID, apis){
     "Accept" = "application/json"
   )
 
-  response<- GET(url= apiSelect$urlMetricsAuthor,headers, query=list("eid"=ID, "count"="25", "view"="ENHANCED"))
-  content<- content(response, "text")
-  result <- fromJSON(content, flatten = TRUE)
+  response<- httr::GET(url= apiSelect$urlMetricsAuthor,headers, query=list("eid"=ID, "count"="25", "view"="ENHANCED"))
+  content<- httr:content(response, "text")
+  result <- jsonlite::fromJSON(content, flatten = TRUE)
 
   View(result)
 

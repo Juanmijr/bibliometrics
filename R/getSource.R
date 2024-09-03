@@ -1,7 +1,3 @@
-library(httr)
-library(jsonlite)
-
-
 #' Método para obtener la información de todas las revistas
 #'
 #' @param apis Vector de las diferentes bases de datos, asignándole TRUE o FALSE, según si la base de datos que queramos buscar.
@@ -9,11 +5,12 @@ library(jsonlite)
 #'
 #' @return Este método, devuelve un dataframe de las revistas que se obtienen de las diferentes bases de datos bibliométricas.
 #' @export
+#' @import jsonlite
 #' @examples
 #' getSource(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"elsevier")
 #' getSource(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"neurocomputing")
 getSource<- function (apis, query){
-  apiConfig<- fromJSON("R/APIConfig.JSON")
+  apiConfig<- jsonlite::fromJSON("R/APIConfig.JSON")
 
 
   selected <- names(apis)[apis]
@@ -60,9 +57,9 @@ getSourceScopus<-function(query, apiSelect){
     "Accept" = "application/json"
   )
 
-  response<- GET(url= apiSelect$urlSource ,headers, query=list( "title"=query, "view"="enhanced"))
-  content<- content(response, "text")
-  result <- fromJSON(content, flatten = TRUE)
+  response<- httr::GET(url= apiSelect$urlSource ,headers, query=list( "title"=query, "view"="enhanced"))
+  content<- httr::content(response, "text")
+  result <- jsonlite::fromJSON(content, flatten = TRUE)
 
 
   if (!is.null(result[["serial-metadata-response"]][["error"]])){
