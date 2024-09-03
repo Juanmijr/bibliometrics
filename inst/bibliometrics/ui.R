@@ -111,21 +111,12 @@ ui <- material_page(
               )
             ),
 
-            tags$button(
-              class="waves-light btn shiny-material-button z-depth-5 shiny-bound-input",
-              id="buttonSearch",
-              value="3",
-              tags$i(
-                class="material-icons left",
-                "search"
-              ),
-              "Buscar"
-            ),
-            tags$script(HTML("
-    $(document).on('click', '#buttonSearch', function() {
-      Shiny.setInputValue('buttonSearch', Math.random());
-    });
-  "))
+            material_button(
+              input_id = "search_button",
+              label="Buscar",
+              icon="search"
+            )
+
           ),
         ),
         tags$div(

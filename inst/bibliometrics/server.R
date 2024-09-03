@@ -124,7 +124,7 @@ server <- function(input, output, session) {
 
 
 
-  observeEvent(input$buttonSearch, {
+  observeEvent(input$search_button, {
 
 
     search_query <- input$searchText
@@ -532,7 +532,7 @@ server <- function(input, output, session) {
                       style = "height: 220px;",
                       title = "Índice H",
                       depth = 5,
-                      tags$div(style = "text-align: center;", tags$h3(metrics$'indiceH'))
+                      tags$div(style = "text-align: center;", tags$h3(metrics$'indiceh'))
                     )
                   ),
                   material_column(

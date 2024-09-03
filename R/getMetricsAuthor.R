@@ -90,22 +90,33 @@ getMetricsAuthorScopus<- function(ID, apis){
   )
 
   response<- httr::GET(url= apiSelect$urlMetricsAuthor,headers, query=list("eid"=ID, "count"="25", "view"="ENHANCED"))
-  content<- httr:content(response, "text")
+  content<- httr::content(response, "text")
   result <- jsonlite::fromJSON(content, flatten = TRUE)
 
-  View(result)
 
 
-  df<- data.frame(
-    "Orcid" = result[["author-retrieval-response"]][["coredata.orcid"]],
-    'Nombre' = paste(result[["author-retrieval-response"]][["author-profile.preferred-name.given-name"]],result[["author-retrieval-response"]][["author-profile.preferred-name.surname"]], sep=" "),
-    "NumDocs" = result[["author-retrieval-response"]][["coredata.document-count"]],
-    'NumCitas' = result[["author-retrieval-response"]][["coredata.citation-count"]],
-    'NumDocsCitados' = result[["author-retrieval-response"]][["coredata.cited-by-count"]],
-    'indice-h' =  result[["author-retrieval-response"]][["h-index"]],
-    'numCoAutor' = result[["author-retrieval-response"]][["coauthor-count"]],
-    'Afiliacion' = result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.preferred-name.$"]],
-    'lugarAfiliacion' = paste(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.city"]],result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.state"]],result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.country"]],sep=", "),
+  df <- data.frame(
+    "Orcid" = ifelse(!is.null(result[["author-retrieval-response"]][["coredata.orcid"]]), result[["author-retrieval-response"]][["coredata.orcid"]], NA),
+    'Nombre' = ifelse(!is.null(result[["author-retrieval-response"]][["author-profile.preferred-name.given-name"]]) &
+                        !is.null(result[["author-retrieval-response"]][["author-profile.preferred-name.surname"]]),
+                      paste(result[["author-retrieval-response"]][["author-profile.preferred-name.given-name"]],
+                            result[["author-retrieval-response"]][["author-profile.preferred-name.surname"]], sep = " "),
+                      NA),
+    "NumDocs" = ifelse(!is.null(result[["author-retrieval-response"]][["coredata.document-count"]]), result[["author-retrieval-response"]][["coredata.document-count"]], NA),
+    'NumCitas' = ifelse(!is.null(result[["author-retrieval-response"]][["coredata.citation-count"]]), result[["author-retrieval-response"]][["coredata.citation-count"]], NA),
+    'NumDocsCitados' = ifelse(!is.null(result[["author-retrieval-response"]][["coredata.cited-by-count"]]), result[["author-retrieval-response"]][["coredata.cited-by-count"]], NA),
+    'indiceh' = ifelse(!is.null(result[["author-retrieval-response"]][["h-index"]]), result[["author-retrieval-response"]][["h-index"]], NA),
+    'numCoAutor' = ifelse(!is.null(result[["author-retrieval-response"]][["coauthor-count"]]), result[["author-retrieval-response"]][["coauthor-count"]], NA),
+    'Afiliacion' = ifelse(!is.null(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.preferred-name.$"]]),
+                          result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.preferred-name.$"]],
+                          NA),
+    'lugarAfiliacion' = ifelse(!is.null(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.city"]]) &
+                                 !is.null(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.state"]]) &
+                                 !is.null(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.country"]]),
+                               paste(result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.city"]],
+                                     result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.state"]],
+                                     result[["author-retrieval-response"]][["author-profile.affiliation-current.affiliation.ip-doc.address.country"]], sep = ", "),
+                               NA),
     stringsAsFactors = FALSE
   )
 
