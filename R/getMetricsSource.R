@@ -32,7 +32,7 @@ getMetricsSource<- function (apis, query, title){
 #'
 #' @return Este método devuelve una lista con varios dataframe en los cuales se hayarán datos métricos de la revista solicitada de la base de datos Scopus.
 #' @export
-#' @import httr, jsonlite
+#' @import httr jsonlite
 
 #' @examples
 #'getMetricsSourceScopus("1874-9305","scopus",NA)

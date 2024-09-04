@@ -20,6 +20,6 @@ Este método devuelve una lista con varios dataframe en los cuales se hayarán d
 Método para obtener métricas de una revista de la base de datos bibliométrica de Scopus.
 }
 \examples{
-getMetricsSource("1874-9305","scopus",NA)
-getMetricsSource(NA,"scopus","Elsevier Astrodynamics Series")
+getMetricsSourceScopus("1874-9305","scopus",NA)
+getMetricsSourceScopus(NA,"scopus","Elsevier Astrodynamics Series")
 }

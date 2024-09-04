@@ -72,7 +72,7 @@ getMetricsAuthorScholar <- function(uid) {
 #'
 #' @return Este método devuelve un dataframe en el cual estará los datos métricos del autor solicitado por el ID de la base de datos Scopus.
 #' @export
-#' @import httr, jsonlite
+#' @import httr jsonlite
 #' @examples
 #'getMetricsAuthorScopus("9-s2.0-40661023100","scopus")
 #'
