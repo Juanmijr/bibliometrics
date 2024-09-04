@@ -14,4 +14,5 @@ geometry: landscape
 library(sylly)
 
 
+
 pander::pandoc.table(params$df, use.hyphening = TRUE, split.cells = 1, split.table = Inf)
