@@ -1,9 +1,9 @@
 Package: bibliometrics
 Title: Análisis de datos bibliométricos
 Version: 1.0.0
-Authors@R: 
-    person("Juan Miguel", "Jiménez Rivas", "jmjr0007@red.ujaen.es", role = c("aut", "cre")),
-    person("Francisco", "Charte Ojeda", "fcharte@ujaen.es", role=c("cre"))
+Authors@R: c(person("Juan Miguel", "Jiménez", email = "jmjr0007@red.ujaen.es", role = 
+   "cre"), person("Francisco", "Charte", email = "fcharte@ujaen.es", role =
+   "aut"))
 Description: Interfaz gráfica para analizar datos bibliométricos de artículos, autores y revistas de las mejores bases de datos científicas.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
