@@ -10,9 +10,6 @@ geometry: landscape
 ---
 
 
-```{r, echo=FALSE}
-library(pander)
-
-
-
-pander::pandoc.table(params$df, use.hyphening = TRUE, split.cells = 1, split.table = Inf)
+```{r}
+library(knitr)
+kable(params$df)
