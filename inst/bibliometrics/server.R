@@ -139,9 +139,9 @@ server <- function(input, output, session) {
 
 
       df_switch <- switch(selected_option,
-                          "article" = bibliometrics::getArticle(selected_api, search_query),
-                          "author" = bibliometrics::getAuthor(selected_api, search_query),
-                          "source" = bibliometrics::getSource(selected_api, search_query)
+                          "article" = bibliometrics::getArticles(selected_api, search_query),
+                          "author" = bibliometrics::getAuthors(selected_api, search_query),
+                          "source" = bibliometrics::getSources(selected_api, search_query)
       )
 
 

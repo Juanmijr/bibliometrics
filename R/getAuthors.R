@@ -8,9 +8,9 @@
 #' @export
 #'
 #' @examples
-#' getAuthor(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"Charte")
-#' getArticle(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"Jiménez")
-getAuthor <- function (apis, query){
+#' getAuthors(c(wos=TRUE,scopus=TRUE, scholar=FALSE),"Charte")
+#' getAuthors(c(wos=FALSE,scopus=TRUE, scholar=TRUE),"Jiménez")
+getAuthors <- function (apis, query){
   apiConfig<- jsonlite::fromJSON("R/APIConfig.JSON")
 
 
@@ -147,7 +147,7 @@ getAuthorsScopus<-function(query, apiSelect){
   )
 
 
-  response<- httr::GET(url= apiSelect$urlAuthor,headers, query=list("query"=textQuery, "count"="25"))
+  response<- httr::GET(url= apiSelect$urlAuthor,headers, query=list("query"=textQuery, "count"="50"))
   content<- httr::content(response, "text")
   result <- jsonlite::fromJSON(content, flatten = TRUE)
 

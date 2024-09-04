@@ -7,9 +7,9 @@
 #' @export
 #' @import jsonlite
 #' @examples
-#' getSource(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"elsevier")
-#' getSource(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"neurocomputing")
-getSource<- function (apis, query){
+#' getSources(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"elsevier")
+#' getSources(c(wos=FALSE,scopus=TRUE, scholar=FALSE),"neurocomputing")
+getSources<- function (apis, query){
   apiConfig<- jsonlite::fromJSON("R/APIConfig.JSON")
 
 
@@ -20,7 +20,7 @@ getSource<- function (apis, query){
     apiSelect <- apiConfig[apiConfig$name == ap,]
 
     if (ap == "scopus") {
-      result <- bibliometrics::getSourceScopus(query, apiSelect)
+      result <- bibliometrics::getSourcesScopus(query, apiSelect)
     } else {
       stop("Valor de 'ap' no válido")
     }
@@ -47,9 +47,9 @@ getSource<- function (apis, query){
 #' @export
 #' @import httr, jsonlite
 #' @examples
-#' getSourceScopus("scopus","elsevier")
-#' getSourceScopus("scopus","neurocomputing")
-getSourceScopus<-function(query, apiSelect){
+#' getSourcesScopus("scopus","elsevier")
+#' getSourcesScopus("scopus","neurocomputing")
+getSourcesScopus<-function(query, apiSelect){
   df=NA
   headers <- add_headers(
     "X-ELS-APIKey" = apiSelect$key,

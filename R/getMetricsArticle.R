@@ -1,4 +1,29 @@
 
+#' Método para obtener métricas de un artículo de las diferentes bases de datos bibliométricas.
+#'
+#' @param apis Nombre de la base de datos a buscar
+#' @param query En este caso será la consulta será el ID del artículo.
+#' @return Este método, devuelve un dataframe de las métricas que se pueden obtener de un artículo de las diferentes bases de datos bibliométricas.
+#' @export
+#'
+#' @examples
+#'getMetricsSource("scopus","1874-9305", NA)
+#'getMetricsSource("scopus",NA, "Elsevier Astrodynamics Series")
+
+getMetricsArticle<- function (apis, query){
+
+  if (apis == "scopus") {
+    result <-getMetricsArticleScopus(query, apis, title)
+  } else {
+    stop(paste("Valor de 'api' no válido: ", apis))
+  }
+
+
+  return(result)
+}
+
+
+
 
 
 #' Método para obtener métricas de Scopus de un artículo mediante web scrapping

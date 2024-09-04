@@ -35,8 +35,8 @@ getMetricsSource<- function (apis, query, title){
 #' @import httr, jsonlite
 
 #' @examples
-#'getMetricsSource("1874-9305","scopus",NA)
-#'getMetricsSource(NA,"scopus","Elsevier Astrodynamics Series")
+#'getMetricsSourceScopus("1874-9305","scopus",NA)
+#'getMetricsSourceScopus(NA,"scopus","Elsevier Astrodynamics Series")
 getMetricsSourceScopus <- function(query, api, titleSource=NULL) {
   apiConfig <- jsonlite::fromJSON("R/APIConfig.JSON")
   apiSelect <- apiConfig[apiConfig$name == api,]
