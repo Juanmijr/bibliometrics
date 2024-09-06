@@ -4,12 +4,19 @@ params:
   df: NULL
 output:
   pdf_document:
-    latex_engine: xelatex
-    extra_dependencies: ["lscape"]
+    extra_dependencies: ["longtable"]
 geometry: landscape
 ---
 
 
-```{r}
+```{r, echo=FALSE}
+# Librerías necesarias
 library(knitr)
-kable(params$df)
+library(kableExtra)
+
+# Generamos una tabla con kableExtra que permitirá mantener las columnas
+# visibles y ajustar el ancho automáticamente
+params$df %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE) %>%
+  kable_styling(latex_options = c("repeat_header", "scale_down"), font_size = 10) %>%
+  column_spec(1, bold = TRUE) # Puedes personalizar el formato aquí

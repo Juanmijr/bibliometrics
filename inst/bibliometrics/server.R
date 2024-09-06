@@ -371,8 +371,6 @@ server <- function(input, output, session) {
 
 
 
-
-
     filename = function() {
       "data.xlsx"
     },
@@ -380,34 +378,38 @@ server <- function(input, output, session) {
       filtered_without <- filtered_data()
       filtered_without <- filtered_without[, colSums(is.na(filtered_without)) != nrow(filtered_without)]
       filtered_without <- filtered_without[, !names(filtered_without) %in% "Botón"]
-      write_xlsx(filtered_without, path = file)
+      writexl::write_xlsx(filtered_without, path = file)
     }
   )
 
-
   output$downloadPDF <- downloadHandler(
-
-
-
     filename = function() {
       "data.pdf"
     },
     content = function(file) {
+      # Guarda el DataFrame como un archivo XLSX temporal
       filtered_without <- filtered_data()
       filtered_without <- filtered_without[, colSums(is.na(filtered_without)) != nrow(filtered_without)]
       filtered_without <- filtered_without[, !names(filtered_without) %in% "Botón"]
+      # Configurar Python
+      python_config <- reticulate::py_discover_config()
+      reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
-      tempReport <- file.path(tempdir(), "report.Rmd")
-      file.copy("template.Rmd", tempReport, overwrite = TRUE)
+      # Asegúrate de que las bibliotecas necesarias estén instaladas
+      if (!py_module_available("pandas")) {
+        reticulate::py_install("pandas")
+      }
+      if (!py_module_available("reportlab")) {
+        reticulate::py_install("reportlab")
+      }
 
-      params <- list(df = filtered_without)
+      # Ruta al script Python dentro del paquete
+      dfPy <- reticulate::r_to_py(filtered_without)
 
-      rmarkdown::render(
-        tempReport,
-        output_file = file,
-        params = params,
-        envir = new.env(parent = globalenv())
-      )
+      reticulate::source_python("pdfGenerator.py")
+      reticulate::py$generate_pdf_from_excel(dfPy, file)
+
+
     }
   )
 

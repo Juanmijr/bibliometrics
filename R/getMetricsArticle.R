@@ -32,13 +32,14 @@ getMetricsArticle<- function (apis, query){
 #'
 #' @return Este método, tras pasar el UID del artículo y haber introducido en el archivo .Renviron, genera un objeto data.frame con las métricas del artículo con dicho UID en Scopus, que posteriormente será devuelto.
 #' @export
+#' @import reticulate
 #' @examples
 #' getMetricsScopus("2-s2.0-85187374370")
 getMetricsScopus <- function(uid) {
 
   readRenviron(".Renviron")
 
-  reticulate::python_config <- py_discover_config()
+  python_config <- reticulate::py_discover_config()
 
   reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
