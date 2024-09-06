@@ -53,11 +53,15 @@ getMetricsScopus <- function(uid) {
 
   reticulate::source_python("R/py/WebScrappingScopus.py")
 
+  print(Sys.getenv("USER"))
 
 
   metrics <-getMetrics(uid, Sys.getenv("USER"), Sys.getenv("PASSWORD"))
 
   dfMetrics <- reticulate::py_to_r(metrics)
+
+
+  View(dfMetrics)
 
   return(dfMetrics)
 }
