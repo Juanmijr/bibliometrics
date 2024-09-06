@@ -46,12 +46,16 @@ getMetricsAuthorScholar <- function(uid) {
 
 
 
-  if (!py_module_available("selenium")) {
+  if (!reticulate::py_module_available("selenium")) {
     reticulate::py_install("selenium")
   }
 
-  if (!py_module_available("pandas")) {
+  if (!reticulate::py_module_available("pandas")) {
     reticulate::py_install("pandas")
+  }
+
+  if (!reticulate::py_module_available("webdriver-manager")) {
+    reticulate::py_install("webdriver-manager")
   }
 
   reticulate::source_python("R/py/WebScrappingGoogle.py")

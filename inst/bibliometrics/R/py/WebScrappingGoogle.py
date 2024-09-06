@@ -3,8 +3,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 import time
 import pandas as pd
+import os
+
 
 def inicializar_navegador():
     options = webdriver.ChromeOptions()
@@ -15,12 +20,8 @@ def inicializar_navegador():
     options.add_argument("--disable-gpu")  
     options.add_argument("--no-sandbox")  
     options.add_argument("--disable-dev-shm-usage") 
-    driver = webdriver.Chrome(executable_path='chromedriver.exe',options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     return driver
-
-
-
-
 
 
 

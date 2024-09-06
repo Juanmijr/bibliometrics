@@ -4,9 +4,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 import time
 import pandas as pd
-
+import os
 def inicializar_navegador():
     options = webdriver.ChromeOptions()
     options.add_argument('--start-maximized')
@@ -16,7 +19,7 @@ def inicializar_navegador():
     options.add_argument("--disable-gpu")  
     options.add_argument("--no-sandbox")  
     options.add_argument("--disable-dev-shm-usage")  
-    driver = webdriver.Chrome(executable_path='chromedriver.exe',options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.get("https://id.elsevier.com/as/authorization.oauth2?platSite=SC%2Fscopus&ui_locales=en-US&scope=openid+profile+email+els_auth_info+els_analytics_info+urn%3Acom%3Aelsevier%3Aidp%3Apolicy%3Aproduct%3Ainst_assoc&response_type=code&redirect_uri=https%3A%2F%2Fwww.scopus.com%2Fauthredirect.uri%3FtxGid%3Dd3e4f5229e01cf39b42f98ff6727d663&state=checkAccessLogin%7CtxId%3D4DA899C2C8F205AF72D685A395F29A66.i-0d6d1bed1b3ca8930%3A4&authType=SINGLE_SIGN_IN&prompt=login&client_id=SCOPUS")
     return driver
 

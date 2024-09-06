@@ -42,7 +42,6 @@ getMetricsScopus <- function(uid) {
   reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
 
-
   if (!py_module_available("selenium")) {
     reticulate::py_install("selenium")
   }
@@ -51,17 +50,15 @@ getMetricsScopus <- function(uid) {
     reticulate::py_install("pandas")
   }
 
+  if (!reticulate::py_module_available("webdriver-manager")) {
+    reticulate::py_install("webdriver-manager")
+  }
   reticulate::source_python("R/py/WebScrappingScopus.py")
-
-  print(Sys.getenv("USER"))
-
 
   metrics <-getMetrics(uid, Sys.getenv("USER"), Sys.getenv("PASSWORD"))
 
   dfMetrics <- reticulate::py_to_r(metrics)
 
-
-  View(dfMetrics)
 
   return(dfMetrics)
 }
