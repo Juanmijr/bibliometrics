@@ -4,8 +4,8 @@
 #' @export
 #'
 #' @examples
-#' setup_renviron()
-setup_renviron <- function() {
+#' credentials()
+credentials <- function() {
   # Solicitar al usuario el nombre de usuario y la contraseña
   user <- readline(prompt = "Introduce tu nombre de usuario: ")
   password <- readline(prompt = "Introduce tu contraseña: ")
