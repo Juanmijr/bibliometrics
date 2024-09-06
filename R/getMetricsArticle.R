@@ -37,8 +37,6 @@ getMetricsArticle<- function (apis, query){
 #' getMetricsScopus("2-s2.0-85187374370")
 getMetricsScopus <- function(uid) {
 
-  readRenviron(".Renviron")
-
   python_config <- reticulate::py_discover_config()
 
   reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
