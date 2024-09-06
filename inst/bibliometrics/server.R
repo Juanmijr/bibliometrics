@@ -396,10 +396,10 @@ server <- function(input, output, session) {
       reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
       # Asegúrate de que las bibliotecas necesarias estén instaladas
-      if (!py_module_available("pandas")) {
+      if (!reticulate::py_module_available("pandas")) {
         reticulate::py_install("pandas")
       }
-      if (!py_module_available("reportlab")) {
+      if (!reticulate::py_module_available("reportlab")) {
         reticulate::py_install("reportlab")
       }
 
