@@ -141,11 +141,11 @@ ui <- material_page(
           id = "instrucciones",
           class="descripcion",
           tags$span(class = "card-title", "Descripción de la aplicación"),
-          tags$p("BiblioMetrics es un paquete de R, desarrollado por Juan Miguel Jiménez Rivas, en su trabajo de fin de grado."),
-          tags$p("La finalidad de este es obtener un análisis bibliométricos de artículos científicos de manera sencilla e intuitiva para el usuario."),
-          tags$p("Mediante una búsqueda simple, puedes realizar búsqueda por artículos, autores y revistas en diferentes bases de datos."),
-          tags$p("Antes de nada, para que la aplicación funcione, debes rellenar el archivo '.Renviron' con el usuario identificativo de la Universidad de Jaén y la contraseña."),
-          tags$p("Espero que el uso sea de su agrado.")
+          tags$p("BiblioMetrics es un paquete de R, desarrollado por Juan Miguel Jiménez Rivas en su trabajo de fin de grado."),
+          tags$p("Su finalidad es proporcionar un análisis bibliométrico de artículos científicos de manera sencilla e intuitiva para el usuario."),
+          tags$p("A través de una búsqueda simple, puedes buscar artículos, autores y revistas en diferentes bases de datos."),
+          tags$p("Para que la aplicación funcione correctamente, debes rellenar el archivo '.Renviron' con el identificador de usuario de la Universidad de Jaén y la contraseña."),
+          tags$p("Esperamos que el uso de la aplicación sea de su agrado.")
           ),
 
         div(
