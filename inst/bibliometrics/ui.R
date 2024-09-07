@@ -145,7 +145,7 @@ ui <- material_page(
           tags$p("Su finalidad es proporcionar un análisis bibliométrico de artículos científicos de manera sencilla e intuitiva para el usuario."),
           tags$p("A través de una búsqueda simple, puedes buscar artículos, autores y revistas en diferentes bases de datos."),
           tags$p("Para que la aplicación funcione correctamente, debes rellenar el archivo '.Renviron' con el identificador de usuario de la Universidad de Jaén y la contraseña."),
-          tags$p("Esperamos que el uso de la aplicación sea de su agrado.")
+          tags$p("Esperamos que el uso de la aplicación sea de tu agrado.")
           ),
 
         div(
