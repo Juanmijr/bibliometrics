@@ -62,13 +62,15 @@ server <- function(input, output, session) {
   create_slider_ui <- function(id, label, min_val, max_val) {
     tags$div(
       class = "input-field",
-      id=paste("slider",id,sep = "-"),
+      id = paste("slider", id, sep = "-"),
       tags$div(
         class = "form-group shiny-input-container",
         tags$label(class = "divRange", label),
         tags$p(class = "range-fields", tags$div(id = id))
       ),
-      tags$script(HTML(sprintf("
+      tags$script(HTML(
+        sprintf(
+          "
       $(document).ready(function() {
         var id = '%s';
         var min = %f;
@@ -101,14 +103,23 @@ server <- function(input, output, session) {
           });
         }
       });
-    ", id,min_val, max_val,id, id, id, id)))
+    ",
+          id,
+          min_val,
+          max_val,
+          id,
+          id,
+          id,
+          id
+        )
+      ))
     )
   }
 
   create_select_ui <- function(id, label, choices) {
     tags$div(
       class = "input-field",
-      id=paste("select",id,sep = "-"),
+      id = paste("select", id, sep = "-"),
       tags$div(
         class = "form-group shiny-input-container",
         selectInput(
@@ -125,99 +136,125 @@ server <- function(input, output, session) {
 
 
   observeEvent(input$search_button, {
-
-
     search_query <- input$searchText
     selected_option <- input$select_search
     selected_api <- input$selectApi
 
 
-      all_names <- c("wos", "scopus", "scholar")
-      selected_api <- setNames(all_names %in% selected_api, all_names)
+    all_names <- c("wos", "scopus", "scholar")
+    selected_api <- setNames(all_names %in% selected_api, all_names)
 
-      runjs("$('#loader').fadeIn();")
-
-
-      df_switch <- switch(selected_option,
-                          "article" = bibliometrics::getArticles(selected_api, search_query),
-                          "author" = bibliometrics::getAuthors(selected_api, search_query),
-                          "source" = bibliometrics::getSources(selected_api, search_query)
-      )
+    runjs("$('#loader').fadeIn();")
 
 
-      df_switch <-  df_switch[, colSums(is.na(df_switch)) != nrow(df_switch)]
-
-      df(df_switch)
-      busqueda(selected_option)
-
-
-      observe({
-        filtered_data <- df()
+    df_switch <- switch(
+      selected_option,
+      "article" = bibliometrics::getArticles(selected_api, search_query),
+      "author" = bibliometrics::getAuthors(selected_api, search_query),
+      "source" = bibliometrics::getSources(selected_api, search_query)
+    )
 
 
-        removeUI("slider-sliderNumDocumentos")
-        removeUI("slider-sliderCitesNum")
-        removeUI("select-selectYear")
-        removeUI("select-selectDOI")
-        removeUI("select-selectAuthor")
-        removeUI("select-selectBD")
+    df_switch <-  df_switch[, colSums(is.na(df_switch)) != nrow(df_switch)]
+
+    df(df_switch)
+    busqueda(selected_option)
 
 
-      if (!'error' %in% names(filtered_data)){
+    observe({
+      filtered_data <- df()
+
+
+      removeUI("slider-sliderNumDocumentos")
+      removeUI("slider-sliderCitesNum")
+      removeUI("select-selectYear")
+      removeUI("select-selectDOI")
+      removeUI("select-selectAuthor")
+      removeUI("select-selectBD")
+
+
+      if (!'error' %in% names(filtered_data)) {
         if (nrow(filtered_data) > 0) {
-          if ('Año' %in% names(filtered_data) && !all(is.null(filtered_data$Año))){
+          if ('Año' %in% names(filtered_data) &&
+              !all(is.null(filtered_data$Año))) {
             output$year <- renderUI({
               create_select_ui("selectYear", "Año:", filtered_data$Año)
             })
           } else {
-            output$year <- renderUI({ NULL })
+            output$year <- renderUI({
+              NULL
+            })
           }
 
-          if ('DOI' %in% names(filtered_data) && !all(is.null(filtered_data$DOI))){
+          if ('DOI' %in% names(filtered_data) &&
+              !all(is.null(filtered_data$DOI))) {
             output$doi <- renderUI({
               create_select_ui("selectDOI", "DOI:", filtered_data$DOI)
             })
           } else {
-            output$doi <- renderUI({ NULL })
+            output$doi <- renderUI({
+              NULL
+            })
           }
 
-          if ('Autor' %in% names(filtered_data) && !all(is.null(filtered_data$Autor))){
+          if ('Autor' %in% names(filtered_data) &&
+              !all(is.null(filtered_data$Autor))) {
             output$author <- renderUI({
               create_select_ui("selectAuthor", "Autor:", filtered_data$Autor)
             })
           } else {
-            output$author <- renderUI({ NULL })
+            output$author <- renderUI({
+              NULL
+            })
           }
 
-          if ('Citas' %in% names(filtered_data) && !all(is.na(filtered_data$Citas))) {
+          if ('Citas' %in% names(filtered_data) &&
+              !all(is.na(filtered_data$Citas))) {
             min_cites <- min(filtered_data$Citas, na.rm = TRUE)
             max_cites <- max(filtered_data$Citas, na.rm = TRUE)
             output$citationNum <- renderUI({
-              create_slider_ui("sliderCitesNum", "Número de citas:", min_cites, max_cites)
+              create_slider_ui("sliderCitesNum",
+                               "Número de citas:",
+                               min_cites,
+                               max_cites)
             })
           } else {
-            output$citationNum <- renderUI({ NULL })
+            output$citationNum <- renderUI({
+              NULL
+            })
           }
 
-          if ('BD' %in% names(filtered_data)){
+          if ('BD' %in% names(filtered_data)) {
             output$bd <- renderUI({
               create_select_ui("selectBD", "Base de datos:", filtered_data$BD)
             })
           } else {
-            output$bd <- renderUI({ NULL })
+            output$bd <- renderUI({
+              NULL
+            })
           }
 
-          if ('NumDocumentos' %in% names(filtered_data) && !all(is.na(filtered_data$NumDocumentos))) {
+          if ('NumDocumentos' %in% names(filtered_data) &&
+              !all(is.na(filtered_data$NumDocumentos))) {
             min_docs <- min(filtered_data$NumDocumentos, na.rm = TRUE)
             max_docs <- max(filtered_data$NumDocumentos, na.rm = TRUE)
             output$documentNum <- renderUI({
-              create_slider_ui("sliderDocsNum", "Número de documentos:", min_docs, max_docs)
+              create_slider_ui("sliderDocsNum",
+                               "Número de documentos:",
+                               min_docs,
+                               max_docs)
             })
           } else {
-            output$documentNum <- renderUI({ NULL })
+            output$documentNum <- renderUI({
+              NULL
+            })
           }
 
-          filtered_data$Botón <- sprintf("<a name='buttonAnalize' id='buttonAnalize_%d' class='analize waves-effect waves-light btn ' data-row='%d'>Análisis</a>", seq_len(nrow(filtered_data)), seq_len(nrow(filtered_data)))
+          filtered_data$Botón <- sprintf(
+            "<a name='buttonAnalize' id='buttonAnalize_%d' class='analize waves-effect waves-light btn ' data-row='%d'>Análisis</a>",
+            seq_len(nrow(filtered_data)),
+            seq_len(nrow(filtered_data))
+          )
           output$resultados <- renderDT({
             datatable(
               filtered_data,
@@ -228,7 +265,8 @@ server <- function(input, output, session) {
                 scrollX = TRUE,
                 autoWidth = TRUE
               ),
-              callback = JS("
+              callback = JS(
+                "
               table.on('click', '.analize', function() {
                 var data = table.row($(this).parents('tr')).data();
                 var rowData = {};
@@ -239,73 +277,95 @@ server <- function(input, output, session) {
                 });
                 Shiny.setInputValue('button_clicked', rowData);
               });
-            ")
+            "
+              )
             )
           })
 
-          runjs("$('#cardFilter').show(); $('#resultados').show(); $('#instrucciones').hide(); $('#errorResultados').hide();")
+          runjs(
+            "$('#cardFilter').show(); $('#resultados').show(); $('#instrucciones').hide(); $('#errorResultados').hide();"
+          )
         } else {
-          runjs("$('#cardFilter').hide(); $('#resultados').hide(); $('#instrucciones').show(); $('#errorResultados').hide();")
+          runjs(
+            "$('#cardFilter').hide(); $('#resultados').hide(); $('#instrucciones').show(); $('#errorResultados').hide();"
+          )
         }
 
 
       }
-        else{
-          runjs("$('#cardFilter').hide(); $('#resultados').hide(); $('#instrucciones').hide(); $('#errorResultados').show();")
+      else{
+        runjs(
+          "$('#cardFilter').hide(); $('#resultados').hide(); $('#instrucciones').hide(); $('#errorResultados').show();"
+        )
 
-        }
+      }
 
 
 
-        runjs("$('#loader').fadeOut();")
-      })
+      runjs("$('#loader').fadeOut();")
+    })
 
   })
 
 
 
   filtered_data <- reactive({
-
     if (nrow(df()) > 0) {
-
       filtered <- df()
 
       # Filtrado por año
-      if (!is.null(input$selectYear) && "Año" %in% colnames(filtered)) {
-        filtered <- filtered[is.na(filtered$Año) | filtered$Año %in% input$selectYear, ]
+      if (!is.null(input$selectYear) &&
+          "Año" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$Año) |
+                               filtered$Año %in% input$selectYear, ]
       }
 
       # Filtrado por DOI
-      if (!is.null(input$selectDOI) && "DOI" %in% colnames(filtered)) {
-        filtered <- filtered[is.na(filtered$DOI) | filtered$DOI %in% input$selectDOI, ]
+      if (!is.null(input$selectDOI) &&
+          "DOI" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$DOI) |
+                               filtered$DOI %in% input$selectDOI, ]
       }
 
       # Filtrado por autor
-      if (!is.null(input$selectAuthor) && "Autor" %in% colnames(filtered)) {
-        filtered <- filtered[is.na(filtered$Autor) | filtered$Autor %in% input$selectAuthor, ]
+      if (!is.null(input$selectAuthor) &&
+          "Autor" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$Autor) |
+                               filtered$Autor %in% input$selectAuthor, ]
       }
 
       # Filtrado por número de citas
-      if (!is.null(input$sliderCitesNum) && "Citas" %in% colnames(filtered)) {
+      if (!is.null(input$sliderCitesNum) &&
+          "Citas" %in% colnames(filtered)) {
         filtered <- filtered[is.na(filtered$Citas) |
-                               (filtered$Citas >= input$sliderCitesNum[1] & filtered$Citas <= input$sliderCitesNum[2]), ]
+                               (
+                                 filtered$Citas >= input$sliderCitesNum[1] &
+                                   filtered$Citas <= input$sliderCitesNum[2]
+                               ), ]
       }
 
       # Filtrado por número de documentos
-      if (!is.null(input$sliderDocsNum) && "NumDocumentos" %in% colnames(filtered)) {
+      if (!is.null(input$sliderDocsNum) &&
+          "NumDocumentos" %in% colnames(filtered)) {
         filtered <- filtered[is.na(filtered$NumDocumentos) |
-                               (filtered$NumDocumentos >= input$sliderDocsNum[1] & filtered$NumDocumentos <= input$sliderDocsNum[2]), ]
+                               (
+                                 filtered$NumDocumentos >= input$sliderDocsNum[1] &
+                                   filtered$NumDocumentos <= input$sliderDocsNum[2]
+                               ), ]
       }
 
       # Filtrado por base de datos (BD)
-      if (!is.null(input$selectBD) && "BD" %in% colnames(filtered)) {
-        filtered <- filtered[is.na(filtered$BD) | filtered$BD %in% input$selectBD, ]
+      if (!is.null(input$selectBD) &&
+          "BD" %in% colnames(filtered)) {
+        filtered <- filtered[is.na(filtered$BD) |
+                               filtered$BD %in% input$selectBD, ]
       }
 
       # Agrega una columna para el botón de análisis
       filtered$Botón <- sprintf(
         "<a name='buttonAnalize' id='buttonAnalize_%d' class='analize waves-effect waves-light btn' data-row='%d'>Análisis</a>",
-        seq_len(nrow(filtered)), seq_len(nrow(filtered))
+        seq_len(nrow(filtered)),
+        seq_len(nrow(filtered))
       )
 
       return(filtered)
@@ -318,9 +378,7 @@ server <- function(input, output, session) {
 
 
   observe({
-
-
-      output$resultados <- renderDT({
+    output$resultados <- renderDT({
       datatable(
         filtered_data(),
         selection = "none",
@@ -330,7 +388,8 @@ server <- function(input, output, session) {
           scrollX = TRUE,
           autoWidth = TRUE
         ),
-        callback = JS("
+        callback = JS(
+          "
             table.on('click', '.analize', function() {
                 var data = table.row($(this).parents('tr')).data();
                 var rowData = {};
@@ -341,24 +400,30 @@ server <- function(input, output, session) {
                 });
                 Shiny.setInputValue('button_clicked', rowData);
             });
-        ")
+        "
+        )
       )
     })
 
 
 
-      if(!is.null(filtered_data())){
-        if (nrow(filtered_data()) > 0) {
-          runjs("$('#cardFilter').show(); $('#resultados').show(); $('#instrucciones').hide(); $('#errorResultados').hide();")
-        } else {
-
-          runjs("$('#cardFilter').show(); $('#resultados').hide(); $('#instrucciones').hide(); $('#errorResultados').show();")
-        }
+    if (!is.null(filtered_data())) {
+      if (nrow(filtered_data()) > 0) {
+        runjs(
+          "$('#cardFilter').show(); $('#resultados').show(); $('#instrucciones').hide(); $('#errorResultados').hide();"
+        )
+      } else {
+        runjs(
+          "$('#cardFilter').show(); $('#resultados').hide(); $('#instrucciones').hide(); $('#errorResultados').show();"
+        )
       }
-      else{
-        runjs("$('#cardFilter').hide(); $('#resultados').hide(); $('#instrucciones').show(); $('#errorResultados').hide();")
+    }
+    else{
+      runjs(
+        "$('#cardFilter').hide(); $('#resultados').hide(); $('#instrucciones').show(); $('#errorResultados').hide();"
+      )
 
-      }
+    }
   })
 
 
@@ -368,9 +433,6 @@ server <- function(input, output, session) {
 
 
   output$downloadXLSX <- downloadHandler(
-
-
-
     filename = function() {
       "data.xlsx"
     },
@@ -387,15 +449,12 @@ server <- function(input, output, session) {
       "data.pdf"
     },
     content = function(file) {
-      # Guarda el DataFrame como un archivo XLSX temporal
       filtered_without <- filtered_data()
       filtered_without <- filtered_without[, colSums(is.na(filtered_without)) != nrow(filtered_without)]
       filtered_without <- filtered_without[, !names(filtered_without) %in% "Botón"]
-      # Configurar Python
       python_config <- reticulate::py_discover_config()
       reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
-      # Asegúrate de que las bibliotecas necesarias estén instaladas
       if (!reticulate::py_module_available("pandas")) {
         reticulate::py_install("pandas")
       }
@@ -403,7 +462,6 @@ server <- function(input, output, session) {
         reticulate::py_install("reportlab")
       }
 
-      # Ruta al script Python dentro del paquete
       dfPy <- reticulate::r_to_py(filtered_without)
 
       reticulate::source_python("pdfGenerator.py")
@@ -555,14 +613,13 @@ server <- function(input, output, session) {
       }
     } else if (busqueda() == "article") {
       if (row$BD == "wos") {
-        # No hay código para esta condición
+
       } else if (row$BD == "scopus") {
         metrics <- bibliometrics::getMetricsScopus(row$ID)
 
         runjs("$('#loader').fadeOut();")
         runjs("$('#liTab2').show();")
 
-        # Comprobar si todas las métricas relevantes son NULL
         if (is.null(metrics[["scopus_metrics"]][["citations_in_scopus"]]) &&
             is.null(metrics[["scopus_metrics"]][["percentile"]]) &&
             is.null(metrics[["scopus_metrics"]][["field_weighted_citation_impact"]]) &&
@@ -571,29 +628,26 @@ server <- function(input, output, session) {
             is.null(metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]) &&
             is.null(metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]) &&
             is.null(metrics[["plumx_metrics"]][["mentions"]][["references"]])) {
-
-          # Si todas las métricas son NULL, mostrar un mensaje de error
           output$analisis <- renderUI({
             div(
-            id = "errorAnalisis",
-            div(
-              class = "error-message",
-              strong("ERROR"),
-              "NO SE PUEDEN OBTENER DATOS PARA ANALIZAR"
+              id = "errorAnalisis",
+              div(
+                class = "error-message",
+                strong("ERROR"),
+                "NO SE PUEDEN OBTENER DATOS PARA ANALIZAR"
+              )
             )
-          )
           })
         } else {
-          # Continuar con el análisis y renderizado si al menos una métrica no es NULL
-
           visit_all <- as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["captures"]][["readers"]]), 0, metrics[["plumx_metrics"]][["captures"]][["readers"]]))
           visit_actually <- as.numeric(ifelse(is.null(metrics[["views_count"]][["total_views"]]), 0, metrics[["views_count"]][["total_views"]]))
           visit_rest <- visit_all - visit_actually
 
-          labelsVisit <- c(
-            paste("Visitas desde", str_extract(metrics[["views_count"]][["years"]], "\\d{4}-\\d{4}")),
-            "Visitas anteriores"
-          )
+          labelsVisit <- c(paste(
+            "Visitas desde",
+            str_extract(metrics[["views_count"]][["years"]], "\\d{4}-\\d{4}")
+          ),
+          "Visitas anteriores")
           valorsVisit <- c(visit_actually, visit_rest)
 
           output$analisis <- renderUI({
@@ -617,15 +671,17 @@ server <- function(input, output, session) {
                     title = "Otros datos del artículo:",
                     depth = 5,
                     plot_ly(
-                      x = c(
-                        "News Mentions",
-                        "Blog Mentions",
-                        "References"
-                      ),
+                      x = c("News Mentions", "Blog Mentions", "References"),
                       y = c(
-                        as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]])),
-                        as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]])),
-                        as.numeric(ifelse(is.null(metrics[["plumx_metrics"]][["mentions"]][["references"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["references"]]))
+                        as.numeric(ifelse(
+                          is.null(metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["news_mentions"]]
+                        )),
+                        as.numeric(ifelse(
+                          is.null(metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["blog_mentions"]]
+                        )),
+                        as.numeric(ifelse(
+                          is.null(metrics[["plumx_metrics"]][["mentions"]][["references"]]), 0, metrics[["plumx_metrics"]][["mentions"]][["references"]]
+                        ))
                       ),
                       type = "bar"
                     )
@@ -660,9 +716,9 @@ server <- function(input, output, session) {
                       material_card(
                         title = "Número de visitas",
                         depth = 5,
-                        tags$p(
-                          gsub("Views count", "Desde", metrics[["views_count"]][["years"]])
-                        ),
+                        tags$p(gsub(
+                          "Views count", "Desde", metrics[["views_count"]][["years"]]
+                        )),
                         tags$div(style = "text-align: center;", tags$h3(metrics[["views_count"]][["total_views"]]))
                       )
                     ),
@@ -752,13 +808,13 @@ server <- function(input, output, session) {
                       style = "height: 220px; text-align: center;",
                       title = "Editorial",
                       depth = 5,
-                      tags$div(
-                        tags$h3(
-                        ifelse(is.na(metrics[[1]][["Editorial"]]),
+                      tags$div(tags$h3(
+                        ifelse(
+                          is.na(metrics[[1]][["Editorial"]]),
                           "No aparece en base de datos",
-                          metrics[[1]][["Editorial"]])
+                          metrics[[1]][["Editorial"]]
                         )
-                      )
+                      ))
                     )
                   ),
                   material_column(

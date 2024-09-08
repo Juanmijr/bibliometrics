@@ -31,10 +31,8 @@ def getAuthors(query):
     try:
         authors_divs = driver.find_elements(By.CLASS_NAME, 'gsc_1usr')
 
-        # Lista para almacenar los datos de cada autor
         authors_data = []
 
-        # Extrae los datos de cada autor
         for author_div in authors_divs:
             href = author_div.find_element(By.CLASS_NAME, 'gs_ai_pho').get_attribute('href')
             identifier = href.split('user=')[1]
@@ -71,19 +69,15 @@ def getAuthors(query):
 def getMetricsAuthor(id):
     driver=inicializar_navegador()
     driver.get("https://scholar.google.es/citations?hl=es&user="+id)
-        # Encuentra la tabla por su ID
     table = driver.find_element(By.ID, 'gsc_rsb_st')
 
-    # Encuentra todas las filas del cuerpo de la tabla
     rows = table.find_elements(By.TAG_NAME, 'tr')
 
-    # Lista para almacenar los datos de la tabla
     table_data = []
 
-    # Itera sobre cada fila y extrae los datos
-    for row in rows[1:]:  # Saltar la primera fila de encabezados
+    for row in rows[1:]:  
         cells = row.find_elements(By.TAG_NAME, 'td')
-        if len(cells) >= 3:  # Asegúrate de que hay suficientes celdas en la fila
+        if len(cells) >= 3:  
             metric = cells[0].text.strip()
             total = cells[1].text.strip()
             since_2019 = cells[2].text.strip()
