@@ -40,9 +40,18 @@ getMetricsAuthor<- function (apis, ID){
 #'getMetricsAuthorScholar("iwXvlSAAAAAJ")
 getMetricsAuthorScholar <- function(uid) {
 
+
+  env_path <- file.path("~/.virtualenvs", "myenv")
+
+
+  if (!dir.exists(env_path)){
+    reticulate::virtualenv_create(envname = "myenv")
+  }
+
+  reticulate::use_virtualenv("myenv")
+
   python_config <- reticulate::py_discover_config()
 
-  reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
 
 
 

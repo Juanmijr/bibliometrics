@@ -57,9 +57,15 @@ getAuthors <- function (apis, query){
 getAuthorsGoogle<-function(query){
 
 
-  python_config <- reticulate::py_discover_config()
+  env_path <- file.path("~/.virtualenvs", "myenv")
 
-  reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
+
+  if (!dir.exists(env_path)){
+    reticulate::virtualenv_create(envname = "myenv")
+  }
+
+  use_virtualenv("myenv")
+
 
   query <- tolower(query)
 
