@@ -21,12 +21,18 @@ server <- function(input, output, session) {
   }
 
 
+  observeEvent(c(input$select_search, input$selectApi), {
+    updateTextInput(session, "searchText", value = "")
+  })
+
+
 
   runjs("$('#liTab2').hide();")
 
   observe({
     runjs('$("#selectApi").val([])')
     selected_option <- input$'select_search'
+
     if (selected_option == "article") {
       runjs(
         '$("#selectApi option[value=\'scholar\']").attr("disabled", "disabled");

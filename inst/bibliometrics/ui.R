@@ -175,5 +175,4 @@ ui <- material_page(
   ),
   material_tab_content(tab_id = "cardAnalisis", uiOutput("analisis")),
 
-
 )
