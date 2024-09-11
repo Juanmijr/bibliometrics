@@ -458,8 +458,14 @@ server <- function(input, output, session) {
       filtered_without <- filtered_data()
       filtered_without <- filtered_without[, colSums(is.na(filtered_without)) != nrow(filtered_without)]
       filtered_without <- filtered_without[, !names(filtered_without) %in% "Botón"]
-      python_config <- reticulate::py_discover_config()
-      reticulate::use_python("~/.virtualenvs/r-reticulate/Scripts/python.exe")
+      env_path <- file.path("~/.virtualenvs", "myenv")
+
+
+      if (!dir.exists(env_path)){
+        reticulate::virtualenv_create(envname = "myenv")
+      }
+
+      use_virtualenv("myenv")
 
       if (!reticulate::py_module_available("pandas")) {
         reticulate::py_install("pandas")
