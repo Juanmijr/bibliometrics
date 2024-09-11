@@ -44,7 +44,7 @@ getMetricsScopus <- function(uid) {
     reticulate::virtualenv_create(envname = "myenv")
   }
 
-  use_virtualenv("myenv")
+  reticulate::use_virtualenv("myenv")
 
 
 

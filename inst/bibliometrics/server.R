@@ -465,7 +465,7 @@ server <- function(input, output, session) {
         reticulate::virtualenv_create(envname = "myenv")
       }
 
-      use_virtualenv("myenv")
+      reticulate::use_virtualenv("myenv")
 
       if (!reticulate::py_module_available("pandas")) {
         reticulate::py_install("pandas")

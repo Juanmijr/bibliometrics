@@ -64,7 +64,7 @@ getAuthorsGoogle<-function(query){
     reticulate::virtualenv_create(envname = "myenv")
   }
 
-  use_virtualenv("myenv")
+  reticulate::use_virtualenv("myenv")
 
 
   query <- tolower(query)

@@ -50,8 +50,6 @@ getMetricsAuthorScholar <- function(uid) {
 
   reticulate::use_virtualenv("myenv")
 
-  python_config <- reticulate::py_discover_config()
-
 
 
 
